@@ -19,6 +19,7 @@ Panduan deployment sistem profil fakultas/prodi UBG menggunakan aaPanel.
 
 | Subdomain | Keterangan |
 |-----------|------------|
+| `profil.ubg.ac.id` | **Portal Admin** (akses /admin) |
 | `fihhp.ubg.ac.id` | Fakultas Ilmu Hukum, Humaniora, dan Pariwisata |
 | `sasing.ubg.ac.id` | Prodi Sastra Inggris |
 | `hukum.ubg.ac.id` | Prodi Ilmu Hukum |
@@ -36,7 +37,7 @@ Panduan deployment sistem profil fakultas/prodi UBG menggunakan aaPanel.
 1. Login ke **aaPanel**
 2. Menu **Website** → **Add site**
 3. Isi:
-   - **Domain**: `fihhp.ubg.ac.id`
+   - **Domain**: `profil.ubg.ac.id`
    - **Root directory**: `/www/wwwroot/ubg-profile`
    - **PHP Version**: 8.2
    - **Database**: Buat baru → `ubg_profile`
@@ -45,7 +46,7 @@ Panduan deployment sistem profil fakultas/prodi UBG menggunakan aaPanel.
 
 ```bash
 cd /www/wwwroot
-git clone https://github.com/[YOUR-REPO]/ubg-profile.git ubg-profile
+git clone https://github.com/fahrymaodah/ubg-profile.git ubg-profile
 cd ubg-profile
 ```
 
@@ -69,7 +70,7 @@ Edit `.env`:
 APP_NAME="Universitas Bumigora"
 APP_ENV=production
 APP_DEBUG=false
-APP_URL=https://fihhp.ubg.ac.id
+APP_URL=https://profil.ubg.ac.id
 APP_DOMAIN=ubg.ac.id
 
 DB_CONNECTION=mysql
@@ -126,6 +127,7 @@ server {
     listen 443 ssl http2;
     
     server_name 
+        profil.ubg.ac.id
         fihhp.ubg.ac.id
         sasing.ubg.ac.id
         hukum.ubg.ac.id
@@ -198,6 +200,7 @@ nginx -t && systemctl reload nginx
 2. Pilih **Let's Encrypt**
 3. Masukkan subdomain:
    ```
+   profil.ubg.ac.id
    fihhp.ubg.ac.id
    sasing.ubg.ac.id
    hukum.ubg.ac.id
@@ -212,6 +215,7 @@ nginx -t && systemctl reload nginx
 
 ```bash
 certbot certonly --nginx \
+  -d profil.ubg.ac.id \
   -d fihhp.ubg.ac.id \
   -d sasing.ubg.ac.id \
   -d hukum.ubg.ac.id \
@@ -229,6 +233,7 @@ Pastikan DNS A record mengarah ke IP server:
 
 | Type | Name | Value |
 |------|------|-------|
+| A | profil | [IP Server] |
 | A | fihhp | [IP Server] |
 | A | sasing | [IP Server] |
 | A | hukum | [IP Server] |
@@ -265,7 +270,7 @@ exit
 
 ### Akses Admin Panel
 
-- **URL**: https://fihhp.ubg.ac.id/admin
+- **URL**: https://profil.ubg.ac.id/admin
 - **Email**: `superadmin@ubg.ac.id`
 
 ---
