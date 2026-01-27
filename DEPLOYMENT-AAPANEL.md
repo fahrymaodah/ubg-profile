@@ -248,30 +248,46 @@ Pastikan DNS A record mengarah ke IP server:
 
 ## 👤 Ganti Password Admin
 
-**WAJIB dilakukan setelah deployment!**
+**WAJIB dilakukan setelah deployment!** Default password saat ini adalah `password`.
+
+### Cara Melakukan
+
+#### Opsi 1: Via Tinker (Recommended)
 
 ```bash
 cd /www/wwwroot/ubg-profile
 php artisan tinker
 ```
 
+Copy-paste command berikut satu per satu:
+
 ```php
 use App\Models\User;
 use Illuminate\Support\Facades\Hash;
 
-User::where('email', 'superadmin@ubg.ac.id')
-    ->update(['password' => Hash::make('PASSWORD_BARU')]);
+# Ganti password superadmin
+User::where('email', 'superadmin@ubg.ac.id')->update(['password' => Hash::make('PASSWORD_BARU_SUPERADMIN')]);
 
-User::where('email', 'admin@ubg.ac.id')
-    ->update(['password' => Hash::make('PASSWORD_BARU')]);
+# Ganti password admin
+User::where('email', 'admin@ubg.ac.id')->update(['password' => Hash::make('PASSWORD_BARU_ADMIN')]);
 
+# Exit tinker
 exit
 ```
+
+#### Opsi 2: Via Admin Panel
+
+1. Login ke https://profil.ubg.ac.id/admin
+2. Email: `superadmin@ubg.ac.id`, Password: `password`
+3. Klik profile di kanan atas → **Edit Profile**
+4. Ganti password
+5. Klik **Save**
 
 ### Akses Admin Panel
 
 - **URL**: https://profil.ubg.ac.id/admin
 - **Email**: `superadmin@ubg.ac.id`
+- **Default Password**: `password` (harus diganti!)
 
 ---
 
