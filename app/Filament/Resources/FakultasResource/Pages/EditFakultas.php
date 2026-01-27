@@ -1,0 +1,25 @@
+<?php
+
+namespace App\Filament\Resources\FakultasResource\Pages;
+
+use App\Filament\Resources\FakultasResource;
+use Filament\Actions;
+use Filament\Resources\Pages\EditRecord;
+
+class EditFakultas extends EditRecord
+{
+    protected static string $resource = FakultasResource::class;
+
+    protected function getHeaderActions(): array
+    {
+        return [
+            Actions\ViewAction::make(),
+            Actions\DeleteAction::make(),
+        ];
+    }
+
+    protected function getRedirectUrl(): string
+    {
+        return $this->getResource()::getUrl('index');
+    }
+}

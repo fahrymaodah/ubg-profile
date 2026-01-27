@@ -1,0 +1,18 @@
+@import '../../../../vendor/filament/filament/resources/css/theme.css';
+
+@source '../../../../app/Filament/**/*';
+@source '../../../../resources/views/filament/**/*';
+
+/* Timeline Repeater: Tahun (0.5fr) | Judul (1.5fr) | Deskripsi (3fr) */
+.timeline-repeater .fi-fo-repeater-item-content > div {
+    display: grid !important;
+    grid-template-columns: 0.5fr 1.5fr 3fr !important;
+    gap: 1rem !important;
+    align-items: center !important;
+}
+
+@media (max-width: 640px) {
+    .timeline-repeater .fi-fo-repeater-item-content > div {
+        grid-template-columns: 1fr !important;
+    }
+}
