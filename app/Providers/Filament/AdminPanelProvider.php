@@ -4,6 +4,7 @@ namespace App\Providers\Filament;
 
 use App\Filament\Widgets\LatestArticlesWidget;
 use App\Filament\Widgets\StatsOverviewWidget;
+use App\Services\AppConfigService;
 use Filament\Http\Middleware\Authenticate;
 use Filament\Http\Middleware\AuthenticateSession;
 use Filament\Http\Middleware\DisableBladeIconComponents;
@@ -12,22 +13,30 @@ use Filament\Pages;
 use Filament\Panel;
 use Filament\PanelProvider;
 use Filament\Support\Colors\Color;
+use Filament\Support\Facades\FilamentView;
 use Filament\Widgets;
 use Illuminate\Cookie\Middleware\AddQueuedCookiesToResponse;
 use Illuminate\Cookie\Middleware\EncryptCookies;
 use Illuminate\Foundation\Http\Middleware\VerifyCsrfToken;
 use Illuminate\Routing\Middleware\SubstituteBindings;
 use Illuminate\Session\Middleware\StartSession;
+use Illuminate\Support\Facades\Blade;
 use Illuminate\View\Middleware\ShareErrorsFromSession;
 
 class AdminPanelProvider extends PanelProvider
 {
     public function panel(Panel $panel): Panel
     {
+        // Build admin domain based on environment
+        // Note: Laravel route domain matching uses getHost() which excludes port
+        $baseDomain = config('app.domain', 'ubg.ac.id');
+        $adminDomain = 'profil.' . $baseDomain;
+        
         return $panel
             ->default()
             ->id('admin')
-            ->path('admin')
+            ->domain($adminDomain)
+            ->path('')
             ->viteTheme('resources/css/filament/admin/theme.css')
             ->login()
             ->brandName('UBG Admin')
@@ -70,6 +79,10 @@ class AdminPanelProvider extends PanelProvider
             ])
             ->sidebarCollapsibleOnDesktop()
             ->maxContentWidth('full')
-            ->globalSearchKeyBindings(['command+k', 'ctrl+k']);
+            ->globalSearchKeyBindings(['command+k', 'ctrl+k'])
+            ->renderHook(
+                'panels::body.start',
+                fn () => view('filament.components.system-notice')
+            );
     }
 }

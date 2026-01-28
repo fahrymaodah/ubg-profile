@@ -44,10 +44,23 @@
                     </a>
                     @endif
                     <span class="ms-2 me-3 opacity-50">|</span>
+                    @php
+                        $baseDomain = config('app.domain', 'ubg.ac.id');
+                        $scheme = app()->environment('local') ? 'http' : 'https';
+                        $port = '';
+                        if (app()->environment('local') && config('app.url')) {
+                            $parsedUrl = parse_url(config('app.url'));
+                            if (isset($parsedUrl['port'])) {
+                                $port = ':' . $parsedUrl['port'];
+                            }
+                        }
+                        $profilUrl = $scheme . '://profil.' . $baseDomain . $port;
+                    @endphp
+                    {{-- Both login and dashboard link to same URL - Filament handles auth redirect --}}
                     @auth
-                    <a href="{{ url('/admin') }}" class="opacity-90 hover:opacity-100 hover:underline transition">Dashboard</a>
+                    <a href="{{ $profilUrl }}" class="opacity-90 hover:opacity-100 hover:underline transition">Dashboard</a>
                     @else
-                    <a href="{{ url('/admin/login') }}" class="opacity-90 hover:opacity-100 hover:underline transition">Login</a>
+                    <a href="{{ $profilUrl }}" class="opacity-90 hover:opacity-100 hover:underline transition">Login</a>
                     @endauth
                 </div>
             </div>
@@ -137,10 +150,13 @@
                 <a href="{{ route('event.index') }}" class="block px-4 py-3 text-gray-700 hover:bg-blue-50 hover:text-blue-600 rounded-lg font-medium">Agenda</a>
                 <a href="{{ route('contact.index') }}" class="block px-4 py-3 text-gray-700 hover:bg-blue-50 hover:text-blue-600 rounded-lg font-medium">Kontak</a>
                 <div class="pt-4 border-t">
+                    @php
+                        $adminUrl = 'https://profil.' . config('app.domain', 'ubg.ac.id') . '/admin';
+                    @endphp
                     @auth
-                    <a href="{{ url('/admin') }}" class="block px-4 py-3 bg-blue-600 text-white text-center rounded-lg font-medium hover:bg-blue-700 transition">Dashboard</a>
+                    <a href="{{ $adminUrl }}" class="block px-4 py-3 bg-blue-600 text-white text-center rounded-lg font-medium hover:bg-blue-700 transition">Dashboard</a>
                     @else
-                    <a href="{{ url('/admin/login') }}" class="block px-4 py-3 bg-blue-600 text-white text-center rounded-lg font-medium hover:bg-blue-700 transition">Login</a>
+                    <a href="{{ $adminUrl }}/login" class="block px-4 py-3 bg-blue-600 text-white text-center rounded-lg font-medium hover:bg-blue-700 transition">Login</a>
                     @endauth
                 </div>
             @endif

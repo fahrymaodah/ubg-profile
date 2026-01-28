@@ -3,6 +3,7 @@
 namespace App\Filament\Resources\ProdiResource\Pages;
 
 use App\Filament\Resources\ProdiResource;
+use App\Services\AppConfigService;
 use Filament\Actions;
 use Filament\Resources\Pages\ListRecords;
 
@@ -12,8 +13,12 @@ class ListProdis extends ListRecords
 
     protected function getHeaderActions(): array
     {
+        $configService = app(AppConfigService::class);
+        $canCreate = $configService->canCreateProdi();
+
         return [
-            Actions\CreateAction::make(),
+            Actions\CreateAction::make()
+                ->visible($canCreate),
         ];
     }
 }

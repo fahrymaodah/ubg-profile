@@ -20,11 +20,20 @@ use Illuminate\Support\Facades\Route;
 |
 | Routes for the public-facing website. These routes handle subdomain
 | routing to serve content for Universitas, Fakultas, and Prodi.
+| Note: 'profil' subdomain is handled by Filament admin panel.
 |
 */
 
-// Routes with subdomain resolution middleware
-Route::middleware(['resolve.unit', 'unit.published', 'unit.context'])->group(function () {
+// Build domain patterns based on config
+// Note: Laravel route domain matching uses getHost() which excludes port
+$baseDomain = config('app.domain', 'ubg.ac.id');
+
+// Domain patterns (without port - Laravel handles port separately)
+$mainDomainPattern = $baseDomain;
+$subdomainPattern = '{subdomain}.' . $baseDomain;
+
+// Define public website routes as a reusable callback
+$publicRoutes = function () {
     // Home
     Route::get('/', [HomeController::class, 'index'])->name('home');
 
@@ -97,7 +106,19 @@ Route::middleware(['resolve.unit', 'unit.published', 'unit.context'])->group(fun
     // SEO
     Route::get('/sitemap.xml', [SitemapController::class, 'index'])->name('sitemap');
     Route::get('/robots.txt', [SitemapController::class, 'robots'])->name('robots');
-});
+};
+
+// Routes for main domain (universitas level, e.g., ubg-local.test:8080)
+Route::domain($mainDomainPattern)
+    ->middleware(['resolve.unit', 'unit.published', 'unit.context'])
+    ->group($publicRoutes);
+
+// Routes for subdomains (fakultas/prodi level, e.g., fihhp.ubg-local.test:8080)
+// Exclude 'profil' and 'admin' subdomains (handled by Filament)
+Route::domain($subdomainPattern)
+    ->middleware(['resolve.unit', 'unit.published', 'unit.context'])
+    ->where(['subdomain' => '^(?!profil$|admin$)[a-z0-9-]+$'])
+    ->group($publicRoutes);
 
 // Health check (no middleware needed)
 Route::get('/ping', function () {
@@ -106,11 +127,13 @@ Route::get('/ping', function () {
 
 // Error page testing routes (only in non-production) - with unit context
 if (app()->environment(['local', 'testing', 'development'])) {
-    Route::middleware(['resolve.unit', 'unit.published', 'unit.context'])->group(function () {
-        Route::get('/test-403', fn() => abort(403, 'Akses ditolak'));
-        Route::get('/test-404', fn() => abort(404, 'Halaman tidak ditemukan'));
-        Route::get('/test-500', fn() => abort(500, 'Server error'));
-    });
+    Route::domain($mainDomainPattern)
+        ->middleware(['resolve.unit', 'unit.published', 'unit.context'])
+        ->group(function () {
+            Route::get('/test-403', fn() => abort(403, 'Akses ditolak'));
+            Route::get('/test-404', fn() => abort(404, 'Halaman tidak ditemukan'));
+            Route::get('/test-500', fn() => abort(500, 'Server error'));
+        });
 }
 
 /*
@@ -125,11 +148,14 @@ if (app()->environment(['local', 'testing', 'development'])) {
 |
 */
 if (app()->environment(['local', 'testing', 'development'])) {
-    Route::prefix('_test')->name('test.')->group(function () {
-        Route::get('/', [App\Http\Controllers\TestAuthController::class, 'testingDashboard'])->name('dashboard');
-        Route::get('/login/superadmin', [App\Http\Controllers\TestAuthController::class, 'loginAsSuperAdmin'])->name('login.superadmin');
-        Route::get('/login/admin', [App\Http\Controllers\TestAuthController::class, 'loginAsAdmin'])->name('login.admin');
-        Route::get('/login/user/{userId}', [App\Http\Controllers\TestAuthController::class, 'loginAsUser'])->name('login.user');
-        Route::get('/logout', [App\Http\Controllers\TestAuthController::class, 'logout'])->name('logout');
-    });
+    Route::domain($mainDomainPattern)
+        ->prefix('_test')
+        ->name('test.')
+        ->group(function () {
+            Route::get('/', [App\Http\Controllers\TestAuthController::class, 'testingDashboard'])->name('dashboard');
+            Route::get('/login/superadmin', [App\Http\Controllers\TestAuthController::class, 'loginAsSuperAdmin'])->name('login.superadmin');
+            Route::get('/login/admin', [App\Http\Controllers\TestAuthController::class, 'loginAsAdmin'])->name('login.admin');
+            Route::get('/login/user/{userId}', [App\Http\Controllers\TestAuthController::class, 'loginAsUser'])->name('login.user');
+            Route::get('/logout', [App\Http\Controllers\TestAuthController::class, 'logout'])->name('logout');
+        });
 }

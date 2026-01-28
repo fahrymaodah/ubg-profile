@@ -6,8 +6,10 @@ use App\Enums\UnitType;
 use App\Models\Announcement;
 use App\Models\Article;
 use App\Models\Dosen;
+use App\Models\Download;
 use App\Models\Event;
 use App\Models\Fakultas;
+use App\Models\Gallery;
 use App\Models\Page;
 use App\Models\Prestasi;
 use App\Models\Prodi;
@@ -118,6 +120,9 @@ class HomeController extends Controller
         $events = collect();
         $dosen = collect();
         $prestasi = collect();
+        $galleries = collect();
+        $downloads = collect();
+        $announcements = collect();
         $pages = collect();
 
         if (strlen($query) >= 3) {
@@ -176,10 +181,50 @@ class HomeController extends Controller
                 $prestasi = Prestasi::forUnit($unitType, $unitId)
                     ->active()
                     ->where(function ($q) use ($query) {
-                        $q->where('nama_prestasi', 'like', "%{$query}%")
-                          ->orWhere('nama_peserta', 'like', "%{$query}%")
+                        $q->where('judul', 'like', "%{$query}%")
+                          ->orWhere('peserta', 'like', "%{$query}%")
                           ->orWhere('penyelenggara', 'like', "%{$query}%")
                           ->orWhere('deskripsi', 'like', "%{$query}%");
+                    })
+                    ->latest()
+                    ->take(5)
+                    ->get();
+            }
+
+            // Search galleries
+            if ($type === 'all' || $type === 'gallery') {
+                $galleries = Gallery::forUnit($unitType, $unitId)
+                    ->where('is_active', true)
+                    ->where(function ($q) use ($query) {
+                        $q->where('title', 'like', "%{$query}%")
+                          ->orWhere('description', 'like', "%{$query}%");
+                    })
+                    ->latest()
+                    ->take(6)
+                    ->get();
+            }
+
+            // Search downloads
+            if ($type === 'all' || $type === 'download') {
+                $downloads = Download::forUnit($unitType, $unitId)
+                    ->where('is_active', true)
+                    ->where(function ($q) use ($query) {
+                        $q->where('title', 'like', "%{$query}%")
+                          ->orWhere('description', 'like', "%{$query}%")
+                          ->orWhere('category', 'like', "%{$query}%");
+                    })
+                    ->latest()
+                    ->take(5)
+                    ->get();
+            }
+
+            // Search announcements
+            if ($type === 'all' || $type === 'announcement') {
+                $announcements = Announcement::forUnit($unitType, $unitId)
+                    ->active()
+                    ->where(function ($q) use ($query) {
+                        $q->where('title', 'like', "%{$query}%")
+                          ->orWhere('content', 'like', "%{$query}%");
                     })
                     ->latest()
                     ->take(5)
@@ -199,7 +244,10 @@ class HomeController extends Controller
             }
         }
 
-        return view('search', compact('query', 'type', 'articles', 'events', 'dosen', 'prestasi', 'pages'));
+        return view('search', compact(
+            'query', 'type', 'articles', 'events', 'dosen', 
+            'prestasi', 'galleries', 'downloads', 'announcements', 'pages'
+        ));
     }
 
     /**

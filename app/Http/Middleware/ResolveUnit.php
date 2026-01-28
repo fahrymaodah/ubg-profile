@@ -46,8 +46,12 @@ class ResolveUnit
             // Subdomain
             $subdomain = str_replace('.' . $mainDomain, '', $host);
             
-            // Skip admin subdomain
-            if ($subdomain === 'admin') {
+            // Handle port for local development (e.g., profil:8080 -> profil)
+            $subdomain = explode(':', $subdomain)[0];
+            
+            // Profil and admin subdomains are handled by Filament
+            // Skip unit resolution and let next middleware/routes handle it
+            if (in_array($subdomain, ['admin', 'profil'])) {
                 return $next($request);
             }
             

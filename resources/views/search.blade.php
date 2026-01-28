@@ -54,6 +54,18 @@
            class="px-4 py-2 rounded-full text-sm font-medium transition {{ ($type ?? '') === 'prestasi' ? 'bg-amber-600 text-white' : 'bg-gray-100 text-gray-700 hover:bg-gray-200' }}">
             Prestasi
         </a>
+        <a href="{{ route('search', ['q' => $query, 'type' => 'gallery']) }}" 
+           class="px-4 py-2 rounded-full text-sm font-medium transition {{ ($type ?? '') === 'gallery' ? 'bg-pink-600 text-white' : 'bg-gray-100 text-gray-700 hover:bg-gray-200' }}">
+            Galeri
+        </a>
+        <a href="{{ route('search', ['q' => $query, 'type' => 'download']) }}" 
+           class="px-4 py-2 rounded-full text-sm font-medium transition {{ ($type ?? '') === 'download' ? 'bg-teal-600 text-white' : 'bg-gray-100 text-gray-700 hover:bg-gray-200' }}">
+            Unduhan
+        </a>
+        <a href="{{ route('search', ['q' => $query, 'type' => 'announcement']) }}" 
+           class="px-4 py-2 rounded-full text-sm font-medium transition {{ ($type ?? '') === 'announcement' ? 'bg-red-600 text-white' : 'bg-gray-100 text-gray-700 hover:bg-gray-200' }}">
+            Pengumuman
+        </a>
         <a href="{{ route('search', ['q' => $query, 'type' => 'page']) }}" 
            class="px-4 py-2 rounded-full text-sm font-medium transition {{ ($type ?? '') === 'page' ? 'bg-gray-600 text-white' : 'bg-gray-100 text-gray-700 hover:bg-gray-200' }}">
             Halaman
@@ -64,7 +76,7 @@
     {{-- Search Results --}}
     @if(isset($query) && $query)
     @php
-        $totalResults = ($articles->count() ?? 0) + ($events->count() ?? 0) + ($dosen->count() ?? 0) + ($prestasi->count() ?? 0) + ($pages->count() ?? 0);
+        $totalResults = ($articles->count() ?? 0) + ($events->count() ?? 0) + ($dosen->count() ?? 0) + ($prestasi->count() ?? 0) + ($galleries->count() ?? 0) + ($downloads->count() ?? 0) + ($announcements->count() ?? 0) + ($pages->count() ?? 0);
     @endphp
 
     <div class="mb-8">
@@ -90,11 +102,22 @@
             <div class="grid gap-4">
                 @foreach($articles as $article)
                 <div class="bg-white rounded-xl shadow-md p-5 hover:shadow-lg transition flex items-start gap-4">
-                    @if($article->thumbnail)
-                    <img src="{{ Storage::url($article->thumbnail) }}" alt="{{ $article->title }}" class="w-20 h-20 rounded-lg object-cover flex-shrink-0">
+                    @if($article->featured_image)
+                    <img src="{{ Storage::url($article->featured_image) }}" alt="{{ $article->title }}" class="w-20 h-20 rounded-lg object-cover flex-shrink-0">
+                    @else
+                    <div class="w-20 h-20 rounded-lg bg-gradient-to-br from-blue-500 to-blue-700 flex items-center justify-center flex-shrink-0">
+                        <svg class="w-8 h-8 text-white/50" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 20H5a2 2 0 01-2-2V6a2 2 0 012-2h10a2 2 0 012 2v1m2 13a2 2 0 01-2-2V7m2 13a2 2 0 002-2V9a2 2 0 00-2-2h-2m-4-3H9M7 16h6M7 8h6v4H7V8z"/>
+                        </svg>
+                    </div>
                     @endif
                     <div class="flex-1 min-w-0">
-                        <span class="inline-block px-2 py-0.5 text-xs font-medium bg-blue-100 text-blue-700 rounded mb-2">Berita</span>
+                        <div class="flex flex-wrap gap-2 mb-2">
+                            <span class="inline-block px-2 py-0.5 text-xs font-medium bg-blue-100 text-blue-700 rounded">Berita</span>
+                            @if($article->category)
+                            <span class="inline-block px-2 py-0.5 text-xs font-medium bg-gray-100 text-gray-700 rounded">{{ $article->category->name }}</span>
+                            @endif
+                        </div>
                         <h4 class="font-semibold text-gray-900 mb-1">
                             <a href="{{ route('article.show', $article) }}" class="hover:text-blue-600">
                                 {!! preg_replace('/(' . preg_quote($query, '/') . ')/i', '<mark class="bg-yellow-200 px-0.5 rounded">$1</mark>', e($article->title)) !!}
@@ -122,19 +145,49 @@
             </h3>
             <div class="grid gap-4">
                 @foreach($events as $event)
+                @php
+                    $isUpcoming = $event->start_date->isFuture();
+                    $isOngoing = $event->start_date->isPast() && ($event->end_date?->isFuture() ?? true);
+                @endphp
                 <div class="bg-white rounded-xl shadow-md p-5 hover:shadow-lg transition flex items-start gap-4">
-                    @if($event->poster)
-                    <img src="{{ Storage::url($event->poster) }}" alt="{{ $event->title }}" class="w-20 h-20 rounded-lg object-cover flex-shrink-0">
+                    @if($event->image)
+                    <img src="{{ Storage::url($event->image) }}" alt="{{ $event->title }}" class="w-20 h-20 rounded-lg object-cover flex-shrink-0">
+                    @else
+                    <div class="w-20 h-20 rounded-lg bg-gradient-to-br from-purple-500 to-purple-700 flex items-center justify-center flex-shrink-0">
+                        <svg class="w-8 h-8 text-white/50" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z"/>
+                        </svg>
+                    </div>
                     @endif
                     <div class="flex-1 min-w-0">
-                        <span class="inline-block px-2 py-0.5 text-xs font-medium bg-green-100 text-green-700 rounded mb-2">Agenda</span>
+                        <div class="flex flex-wrap gap-2 mb-2">
+                            <span class="inline-block px-2 py-0.5 text-xs font-medium {{ $isOngoing ? 'bg-green-100 text-green-700' : ($isUpcoming ? 'bg-blue-100 text-blue-700' : 'bg-gray-100 text-gray-700') }} rounded">
+                                {{ $isOngoing ? 'Berlangsung' : ($isUpcoming ? 'Akan Datang' : 'Selesai') }}
+                            </span>
+                        </div>
                         <h4 class="font-semibold text-gray-900 mb-1">
                             <a href="{{ route('event.show', $event) }}" class="hover:text-green-600">
                                 {!! preg_replace('/(' . preg_quote($query, '/') . ')/i', '<mark class="bg-yellow-200 px-0.5 rounded">$1</mark>', e($event->title)) !!}
                             </a>
                         </h4>
                         <p class="text-sm text-gray-600 line-clamp-2">{!! preg_replace('/(' . preg_quote($query, '/') . ')/i', '<mark class="bg-yellow-200 px-0.5 rounded">$1</mark>', e(Str::limit($event->description, 150))) !!}</p>
-                        <span class="text-xs text-gray-500 mt-1 block">{{ $event->start_date?->format('d M Y') }} - {{ $event->location }}</span>
+                        <div class="flex items-center gap-3 text-xs text-gray-500 mt-1">
+                            <span class="flex items-center gap-1">
+                                <svg class="w-3 h-3" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z"/>
+                                </svg>
+                                {{ $event->start_date?->format('d M Y') }}
+                            </span>
+                            @if($event->location)
+                            <span class="flex items-center gap-1">
+                                <svg class="w-3 h-3" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z"/>
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 11a3 3 0 11-6 0 3 3 0 016 0z"/>
+                                </svg>
+                                {{ $event->location }}
+                            </span>
+                            @endif
+                        </div>
                     </div>
                 </div>
                 @endforeach
@@ -157,20 +210,27 @@
                 @foreach($dosen as $d)
                 <div class="bg-white rounded-xl shadow-md p-5 hover:shadow-lg transition flex items-center gap-4">
                     @if($d->foto)
-                    <img src="{{ Storage::url($d->foto) }}" alt="{{ $d->nama }}" class="w-16 h-16 rounded-full object-cover flex-shrink-0">
+                    <img src="{{ Storage::url($d->foto) }}" alt="{{ $d->nama_lengkap }}" class="w-16 h-16 rounded-full object-cover object-top flex-shrink-0">
                     @else
-                    <div class="w-16 h-16 rounded-full bg-purple-100 flex items-center justify-center flex-shrink-0">
-                        <span class="text-purple-600 font-bold text-xl">{{ strtoupper(substr($d->nama, 0, 1)) }}</span>
+                    <div class="w-16 h-16 rounded-full bg-gradient-to-br from-gray-200 to-gray-300 flex items-center justify-center flex-shrink-0">
+                        <svg class="w-8 h-8 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z"/>
+                        </svg>
                     </div>
                     @endif
                     <div class="flex-1 min-w-0">
-                        <span class="inline-block px-2 py-0.5 text-xs font-medium bg-purple-100 text-purple-700 rounded mb-1">Dosen</span>
+                        @if($d->jabatan_fungsional)
+                        <span class="inline-block px-2 py-0.5 text-xs font-medium bg-blue-100 text-blue-700 rounded mb-1">{{ $d->jabatan_fungsional }}</span>
+                        @endif
                         <h4 class="font-semibold text-gray-900">
-                            <a href="{{ route('dosen.show', $d) }}" class="hover:text-purple-600">
-                                {!! preg_replace('/(' . preg_quote($query, '/') . ')/i', '<mark class="bg-yellow-200 px-0.5 rounded">$1</mark>', e($d->full_name)) !!}
+                            <a href="{{ route('dosen.show', $d->nidn) }}" class="hover:text-purple-600">
+                                {!! preg_replace('/(' . preg_quote($query, '/') . ')/i', '<mark class="bg-yellow-200 px-0.5 rounded">$1</mark>', e($d->nama_lengkap)) !!}
                             </a>
                         </h4>
-                        <p class="text-sm text-gray-600">{{ $d->jabatan_fungsional }} - {{ $d->prodi?->nama }}</p>
+                        <p class="text-xs text-gray-500">NIDN: {{ $d->nidn }}</p>
+                        @if($d->prodi)
+                        <p class="text-sm text-blue-600 font-medium">{{ $d->prodi->nama }}</p>
+                        @endif
                     </div>
                 </div>
                 @endforeach
@@ -193,19 +253,169 @@
                 @foreach($prestasi as $p)
                 <div class="bg-white rounded-xl shadow-md p-5 hover:shadow-lg transition flex items-start gap-4">
                     @if($p->foto)
-                    <img src="{{ Storage::url($p->foto) }}" alt="{{ $p->nama_prestasi }}" class="w-20 h-20 rounded-lg object-cover flex-shrink-0">
+                    <img src="{{ Storage::url($p->foto) }}" alt="{{ $p->judul }}" class="w-20 h-20 rounded-lg object-cover flex-shrink-0">
+                    @else
+                    <div class="w-20 h-20 rounded-lg bg-gradient-to-br from-amber-400 to-amber-600 flex items-center justify-center flex-shrink-0">
+                        <svg class="w-8 h-8 text-white/50" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 3v4M3 5h4M6 17v4m-2-2h4m5-16l2.286 6.857L21 12l-5.714 2.143L13 21l-2.286-6.857L5 12l5.714-2.143L13 3z"/>
+                        </svg>
+                    </div>
                     @endif
                     <div class="flex-1 min-w-0">
-                        <span class="inline-block px-2 py-0.5 text-xs font-medium bg-amber-100 text-amber-700 rounded mb-2">Prestasi</span>
+                        <div class="flex flex-wrap gap-2 mb-2">
+                            <span class="inline-block px-2 py-0.5 text-xs font-medium bg-amber-100 text-amber-700 rounded">{{ $p->kategori?->label() ?? 'Prestasi' }}</span>
+                            <span class="inline-block px-2 py-0.5 text-xs font-medium bg-gray-100 text-gray-700 rounded">{{ $p->tingkat?->label() }}</span>
+                        </div>
                         <h4 class="font-semibold text-gray-900 mb-1">
                             <a href="{{ route('prestasi.show', $p) }}" class="hover:text-amber-600">
-                                {!! preg_replace('/(' . preg_quote($query, '/') . ')/i', '<mark class="bg-yellow-200 px-0.5 rounded">$1</mark>', e($p->nama_prestasi)) !!}
+                                {!! preg_replace('/(' . preg_quote($query, '/') . ')/i', '<mark class="bg-yellow-200 px-0.5 rounded">$1</mark>', e($p->judul)) !!}
                             </a>
                         </h4>
-                        <p class="text-sm text-gray-600">{{ $p->nama_peserta }} - {{ $p->tingkat?->label() }} {{ $p->peringkat }}</p>
-                        <span class="text-xs text-gray-500">{{ $p->penyelenggara }} • {{ $p->tanggal?->format('Y') }}</span>
+                        @if($p->peserta)
+                        <p class="text-sm text-gray-600 mb-1">{{ $p->peserta }}</p>
+                        @endif
+                        <span class="text-xs text-gray-500">{{ $p->penyelenggara }} • {{ $p->tanggal?->format('d M Y') }}</span>
                     </div>
                 </div>
+                @endforeach
+            </div>
+        </div>
+        @endif
+
+        {{-- Gallery Results --}}
+        @if($galleries->count() > 0)
+        <div>
+            <h3 class="text-lg font-bold text-gray-900 mb-4 flex items-center gap-2">
+                <span class="w-8 h-8 bg-pink-100 rounded-lg flex items-center justify-center">
+                    <svg class="w-4 h-4 text-pink-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14m-6-6h.01M6 20h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z"/>
+                    </svg>
+                </span>
+                Galeri ({{ $galleries->count() }})
+            </h3>
+            <div class="grid md:grid-cols-2 lg:grid-cols-3 gap-4">
+                @foreach($galleries as $gallery)
+                <a href="{{ route('gallery.show', $gallery) }}" class="bg-white rounded-xl shadow-md overflow-hidden group hover:shadow-lg transition">
+                    <div class="relative h-40 overflow-hidden">
+                        @if($gallery->file)
+                        <img src="{{ Storage::url($gallery->file) }}" alt="{{ $gallery->title }}" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300">
+                        @else
+                        <div class="w-full h-full bg-gradient-to-br from-pink-400 to-pink-600 flex items-center justify-center">
+                            <svg class="w-12 h-12 text-white/50" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14m-6-6h.01M6 20h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z"/>
+                            </svg>
+                        </div>
+                        @endif
+                        <span class="absolute top-2 left-2 px-2 py-0.5 text-xs font-medium bg-pink-100 text-pink-700 rounded">{{ $gallery->type === 'video' ? 'Video' : 'Foto' }}</span>
+                    </div>
+                    <div class="p-4">
+                        <h4 class="font-semibold text-gray-900 group-hover:text-pink-600 transition line-clamp-1">
+                            {!! preg_replace('/(' . preg_quote($query, '/') . ')/i', '<mark class="bg-yellow-200 px-0.5 rounded">$1</mark>', e($gallery->title)) !!}
+                        </h4>
+                        @if($gallery->description)
+                        <p class="text-sm text-gray-600 line-clamp-1 mt-1">{!! preg_replace('/(' . preg_quote($query, '/') . ')/i', '<mark class="bg-yellow-200 px-0.5 rounded">$1</mark>', e(Str::limit($gallery->description, 60))) !!}</p>
+                        @endif
+                    </div>
+                </a>
+                @endforeach
+            </div>
+        </div>
+        @endif
+
+        {{-- Download Results --}}
+        @if($downloads->count() > 0)
+        <div>
+            <h3 class="text-lg font-bold text-gray-900 mb-4 flex items-center gap-2">
+                <span class="w-8 h-8 bg-teal-100 rounded-lg flex items-center justify-center">
+                    <svg class="w-4 h-4 text-teal-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 10v6m0 0l-3-3m3 3l3-3m2 8H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"/>
+                    </svg>
+                </span>
+                Unduhan ({{ $downloads->count() }})
+            </h3>
+            <div class="grid gap-4">
+                @foreach($downloads as $download)
+                @php
+                    $extension = pathinfo($download->file, PATHINFO_EXTENSION);
+                    $iconColors = [
+                        'pdf' => ['bg' => 'bg-red-100', 'text' => 'text-red-600', 'icon' => 'PDF'],
+                        'doc' => ['bg' => 'bg-blue-100', 'text' => 'text-blue-600', 'icon' => 'DOC'],
+                        'docx' => ['bg' => 'bg-blue-100', 'text' => 'text-blue-600', 'icon' => 'DOC'],
+                        'xls' => ['bg' => 'bg-green-100', 'text' => 'text-green-600', 'icon' => 'XLS'],
+                        'xlsx' => ['bg' => 'bg-green-100', 'text' => 'text-green-600', 'icon' => 'XLS'],
+                        'ppt' => ['bg' => 'bg-orange-100', 'text' => 'text-orange-600', 'icon' => 'PPT'],
+                        'pptx' => ['bg' => 'bg-orange-100', 'text' => 'text-orange-600', 'icon' => 'PPT'],
+                        'zip' => ['bg' => 'bg-purple-100', 'text' => 'text-purple-600', 'icon' => 'ZIP'],
+                        'rar' => ['bg' => 'bg-purple-100', 'text' => 'text-purple-600', 'icon' => 'RAR'],
+                    ];
+                    $iconStyle = $iconColors[$extension] ?? ['bg' => 'bg-gray-100', 'text' => 'text-gray-600', 'icon' => strtoupper($extension)];
+                @endphp
+                <div class="bg-white rounded-xl shadow-md p-5 hover:shadow-lg transition flex items-center gap-4">
+                    <div class="flex-shrink-0 w-12 h-12 {{ $iconStyle['bg'] }} rounded-lg flex items-center justify-center">
+                        <span class="{{ $iconStyle['text'] }} font-bold text-xs">{{ $iconStyle['icon'] }}</span>
+                    </div>
+                    <div class="flex-1 min-w-0">
+                        @if($download->category)
+                        <span class="inline-block px-2 py-0.5 text-xs font-medium bg-teal-100 text-teal-700 rounded mb-1">{{ $download->category }}</span>
+                        @endif
+                        <h4 class="font-semibold text-gray-900">
+                            {!! preg_replace('/(' . preg_quote($query, '/') . ')/i', '<mark class="bg-yellow-200 px-0.5 rounded">$1</mark>', e($download->title)) !!}
+                        </h4>
+                        @if($download->description)
+                        <p class="text-sm text-gray-600 line-clamp-1">{!! preg_replace('/(' . preg_quote($query, '/') . ')/i', '<mark class="bg-yellow-200 px-0.5 rounded">$1</mark>', e(Str::limit($download->description, 100))) !!}</p>
+                        @endif
+                        <span class="text-xs text-gray-500">{{ $download->file_size ? number_format($download->file_size / 1024, 0) . ' KB' : '' }} • {{ $download->download_count ?? 0 }} unduhan</span>
+                    </div>
+                    <a href="{{ route('download.file', $download) }}" class="flex-shrink-0 p-2 bg-teal-100 text-teal-600 rounded-lg hover:bg-teal-200 transition">
+                        <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-4l-4 4m0 0l-4-4m4 4V4"/>
+                        </svg>
+                    </a>
+                </div>
+                @endforeach
+            </div>
+        </div>
+        @endif
+
+        {{-- Announcement Results --}}
+        @if($announcements->count() > 0)
+        <div>
+            <h3 class="text-lg font-bold text-gray-900 mb-4 flex items-center gap-2">
+                <span class="w-8 h-8 bg-red-100 rounded-lg flex items-center justify-center">
+                    <svg class="w-4 h-4 text-red-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M11 5.882V19.24a1.76 1.76 0 01-3.417.592l-2.147-6.15M18 13a3 3 0 100-6M5.436 13.683A4.001 4.001 0 017 6h1.832c4.1 0 7.625-1.234 9.168-3v14c-1.543-1.766-5.067-3-9.168-3H7a3.988 3.988 0 01-1.564-.317z"/>
+                    </svg>
+                </span>
+                Pengumuman ({{ $announcements->count() }})
+            </h3>
+            <div class="grid gap-4">
+                @foreach($announcements as $announcement)
+                @php
+                    $priorityConfig = [
+                        'urgent' => ['icon' => '🔴', 'bg' => 'bg-red-100', 'text' => 'text-red-700'],
+                        'high' => ['icon' => '🟠', 'bg' => 'bg-orange-100', 'text' => 'text-orange-700'],
+                        'normal' => ['icon' => '🟢', 'bg' => 'bg-green-100', 'text' => 'text-green-700'],
+                        'low' => ['icon' => '⚪', 'bg' => 'bg-gray-100', 'text' => 'text-gray-700'],
+                    ];
+                    $config = $priorityConfig[$announcement->priority] ?? $priorityConfig['normal'];
+                @endphp
+                <a href="{{ route('announcement.show', $announcement) }}" class="bg-white rounded-xl shadow-md p-5 hover:shadow-lg transition flex items-start gap-4 group">
+                    <div class="flex-shrink-0 w-10 h-10 {{ $config['bg'] }} rounded-full flex items-center justify-center">
+                        <span class="text-lg">{{ $config['icon'] }}</span>
+                    </div>
+                    <div class="flex-1 min-w-0">
+                        <div class="flex items-center gap-2 mb-1">
+                            <span class="inline-block px-2 py-0.5 text-xs font-medium {{ $config['bg'] }} {{ $config['text'] }} rounded">{{ ucfirst($announcement->priority) }}</span>
+                            <span class="text-xs text-gray-500">{{ $announcement->created_at->format('d M Y') }}</span>
+                        </div>
+                        <h4 class="font-semibold text-gray-900 group-hover:text-red-600 transition">
+                            {!! preg_replace('/(' . preg_quote($query, '/') . ')/i', '<mark class="bg-yellow-200 px-0.5 rounded">$1</mark>', e($announcement->title)) !!}
+                        </h4>
+                        @if($announcement->content)
+                        <p class="text-sm text-gray-600 line-clamp-2 mt-1">{!! preg_replace('/(' . preg_quote($query, '/') . ')/i', '<mark class="bg-yellow-200 px-0.5 rounded">$1</mark>', e(Str::limit(strip_tags($announcement->content), 150))) !!}</p>
+                        @endif
+                    </div>
+                </a>
                 @endforeach
             </div>
         </div>
@@ -224,14 +434,21 @@
             </h3>
             <div class="grid gap-4">
                 @foreach($pages as $page)
-                <div class="bg-white rounded-xl shadow-md p-5 hover:shadow-lg transition">
-                    <span class="inline-block px-2 py-0.5 text-xs font-medium bg-gray-100 text-gray-700 rounded mb-2">Halaman</span>
-                    <h4 class="font-semibold text-gray-900 mb-1">
-                        <a href="{{ route('page.show', $page) }}" class="hover:text-blue-600">
-                            {!! preg_replace('/(' . preg_quote($query, '/') . ')/i', '<mark class="bg-yellow-200 px-0.5 rounded">$1</mark>', e($page->title)) !!}
-                        </a>
-                    </h4>
-                    <p class="text-sm text-gray-600 line-clamp-2">{!! preg_replace('/(' . preg_quote($query, '/') . ')/i', '<mark class="bg-yellow-200 px-0.5 rounded">$1</mark>', e(Str::limit(strip_tags($page->content), 150))) !!}</p>
+                <div class="bg-white rounded-xl shadow-md p-5 hover:shadow-lg transition flex items-start gap-4">
+                    <div class="w-12 h-12 rounded-lg bg-gray-100 flex items-center justify-center flex-shrink-0">
+                        <svg class="w-6 h-6 text-gray-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"/>
+                        </svg>
+                    </div>
+                    <div class="flex-1 min-w-0">
+                        <span class="inline-block px-2 py-0.5 text-xs font-medium bg-gray-100 text-gray-700 rounded mb-2">Halaman</span>
+                        <h4 class="font-semibold text-gray-900 mb-1">
+                            <a href="{{ route('page.show', $page) }}" class="hover:text-blue-600">
+                                {!! preg_replace('/(' . preg_quote($query, '/') . ')/i', '<mark class="bg-yellow-200 px-0.5 rounded">$1</mark>', e($page->title)) !!}
+                            </a>
+                        </h4>
+                        <p class="text-sm text-gray-600 line-clamp-2">{!! preg_replace('/(' . preg_quote($query, '/') . ')/i', '<mark class="bg-yellow-200 px-0.5 rounded">$1</mark>', e(Str::limit(strip_tags($page->content), 150))) !!}</p>
+                    </div>
                 </div>
                 @endforeach
             </div>

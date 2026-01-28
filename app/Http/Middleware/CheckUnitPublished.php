@@ -22,6 +22,11 @@ class CheckUnitPublished
         $unitType = $request->attributes->get('unit_type');
         $unitId = $request->attributes->get('unit_id');
         
+        // Skip if unit_type is not set (e.g., profil subdomain handled by Filament)
+        if ($unitType === null) {
+            return $next($request);
+        }
+        
         // Universitas is always published
         if ($unitType === UnitType::UNIVERSITAS) {
             return $next($request);

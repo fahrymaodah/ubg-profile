@@ -124,6 +124,9 @@
     @stack('styles')
 </head>
 <body class="min-h-screen bg-gray-50 flex flex-col font-sans antialiased text-gray-900">
+    {{-- System Status --}}
+    <x-system-status />
+    
     @include('layouts.partials.navbar')
 
     <main class="flex-1">

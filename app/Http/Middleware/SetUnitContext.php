@@ -25,9 +25,14 @@ class SetUnitContext
      */
     public function handle(Request $request, Closure $next): Response
     {
-        $unitType = $request->attributes->get('unit_type', UnitType::UNIVERSITAS);
+        $unitType = $request->attributes->get('unit_type');
         $unitId = $request->attributes->get('unit_id');
         $unit = $request->attributes->get('unit');
+
+        // Skip if unit_type is not set (e.g., profil subdomain handled by Filament)
+        if ($unitType === null) {
+            return $next($request);
+        }
 
         // Load and share common data with views
 

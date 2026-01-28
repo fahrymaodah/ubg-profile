@@ -86,6 +86,10 @@ SESSION_DOMAIN=.ubg.ac.id
 CACHE_STORE=file
 QUEUE_CONNECTION=database
 FILESYSTEM_DISK=public
+
+# System Configuration (WAJIB - dapatkan dari developer)
+SYSTEM_KEY="license_key_dari_developer"
+SYSTEM_CONTACT=developer@example.com
 ```
 
 ### Step 5: Setup Database
@@ -277,7 +281,7 @@ exit
 
 #### Opsi 2: Via Admin Panel
 
-1. Login ke https://profil.ubg.ac.id/admin
+1. Login ke https://profil.ubg.ac.id/login
 2. Email: `superadmin@ubg.ac.id`, Password: `password`
 3. Klik profile di kanan atas → **Edit Profile**
 4. Ganti password
@@ -285,7 +289,8 @@ exit
 
 ### Akses Admin Panel
 
-- **URL**: https://profil.ubg.ac.id/admin
+- **URL**: https://profil.ubg.ac.id (langsung ke subdomain, tanpa /admin)
+- **Login**: https://profil.ubg.ac.id/login
 - **Email**: `superadmin@ubg.ac.id`
 - **Default Password**: `password` (harus diganti!)
 
@@ -328,6 +333,7 @@ chown -R www-data:www-data storage bootstrap/cache
 ## ✅ Checklist Sebelum Go-Live
 
 - [ ] `APP_ENV=production` dan `APP_DEBUG=false`
+- [ ] `SYSTEM_KEY` sudah diisi (minta ke developer)
 - [ ] Password admin sudah diganti
 - [ ] SSL aktif (HTTPS)
 - [ ] Storage link sudah dibuat
@@ -335,7 +341,36 @@ chown -R www-data:www-data storage bootstrap/cache
 
 ---
 
-## 🐛 Troubleshooting
+## 🔒 Security
+
+### Hapus Folder yang Tidak Diperlukan
+
+Setelah deployment selesai, hapus folder yang tidak diperlukan di production:
+
+```bash
+cd /www/wwwroot/ubg-profile
+rm -rf .git/
+rm -rf tests/
+rm -f .env.example
+```
+
+### Verifikasi SYSTEM_KEY
+
+Setelah deployment, pastikan sistem berjalan dengan benar:
+
+```bash
+php artisan tinker --execute="
+\$svc = app(\App\Services\AppConfigService::class);
+echo 'Valid: ' . (\$svc->validate() ? 'Yes' : 'No') . PHP_EOL;
+echo 'Error: ' . (\$svc->getError() ?? 'None') . PHP_EOL;
+"
+```
+
+Jika output menunjukkan error, hubungi developer untuk mendapatkan `SYSTEM_KEY` yang valid.
+
+---
+
+## �🐛 Troubleshooting
 
 ### Error 500
 
