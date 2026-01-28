@@ -50,6 +50,10 @@ Thumbs.db
 /Makefile
 /setup.sh
 
+# License tools (RAHASIA - jangan push!)
+/license-tools
+/setup.sh
+
 # OS
 .AppleDouble
 .LSOverride
