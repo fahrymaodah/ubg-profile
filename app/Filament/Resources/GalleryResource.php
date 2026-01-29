@@ -3,6 +3,7 @@
 namespace App\Filament\Resources;
 
 use App\Enums\UnitType;
+use App\Enums\UserRole;
 use App\Filament\Resources\GalleryResource\Pages;
 use App\Filament\Traits\HasUnitScope;
 use App\Models\Gallery;
