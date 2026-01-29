@@ -27,16 +27,10 @@ class AdminPanelProvider extends PanelProvider
 {
     public function panel(Panel $panel): Panel
     {
-        // Build admin domain based on environment
-        // Note: Laravel route domain matching uses getHost() which excludes port
-        $baseDomain = config('app.domain', 'ubg.ac.id');
-        $adminDomain = 'profil.' . $baseDomain;
-        
         return $panel
             ->default()
             ->id('admin')
-            ->domain($adminDomain)
-            ->path('')
+            ->path('admin')
             ->viteTheme('resources/css/filament/admin/theme.css')
             ->login()
             ->brandName('UBG Admin')

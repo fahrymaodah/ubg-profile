@@ -44,23 +44,11 @@
                     </a>
                     @endif
                     <span class="ms-2 me-3 opacity-50">|</span>
-                    @php
-                        $baseDomain = config('app.domain', 'ubg.ac.id');
-                        $scheme = app()->environment('local') ? 'http' : 'https';
-                        $port = '';
-                        if (app()->environment('local') && config('app.url')) {
-                            $parsedUrl = parse_url(config('app.url'));
-                            if (isset($parsedUrl['port'])) {
-                                $port = ':' . $parsedUrl['port'];
-                            }
-                        }
-                        $profilUrl = $scheme . '://profil.' . $baseDomain . $port;
-                    @endphp
-                    {{-- Both login and dashboard link to same URL - Filament handles auth redirect --}}
+                    {{-- Admin panel accessible via /admin on any subdomain --}}
                     @auth
-                    <a href="{{ $profilUrl }}" class="opacity-90 hover:opacity-100 hover:underline transition">Dashboard</a>
+                    <a href="{{ url('/admin') }}" class="opacity-90 hover:opacity-100 hover:underline transition">Dashboard</a>
                     @else
-                    <a href="{{ $profilUrl }}" class="opacity-90 hover:opacity-100 hover:underline transition">Login</a>
+                    <a href="{{ url('/admin/login') }}" class="opacity-90 hover:opacity-100 hover:underline transition">Login</a>
                     @endauth
                 </div>
             </div>
