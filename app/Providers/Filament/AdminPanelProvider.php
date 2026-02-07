@@ -77,6 +77,21 @@ class AdminPanelProvider extends PanelProvider
             ->renderHook(
                 'panels::body.start',
                 fn () => view('filament.components.system-notice')
+            )
+            // Manual Livewire loading - Cloudflare bypass (blocks ?id=xxx query string)
+            ->renderHook(
+                'panels::head.end',
+                fn () => view('filament.components.livewire-styles')
+            )
+            // Load Livewire BEFORE Filament's app.js (so Alpine is available)
+            ->renderHook(
+                'panels::scripts.before',
+                fn () => view('filament.components.livewire-scripts')
+            )
+            // Start Livewire AFTER Filament's app.js (after Alpine components are registered)
+            ->renderHook(
+                'panels::scripts.after',
+                fn () => view('filament.components.livewire-start')
             );
     }
 }
