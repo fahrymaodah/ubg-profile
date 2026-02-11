@@ -51,16 +51,16 @@
         <div class="mt-12 mb-5 pt-8 border-t border-gray-200">
             <p class="text-sm text-gray-500 mb-4">Atau kunjungi halaman populer:</p>
             <div class="flex flex-wrap justify-center gap-3">
-                <a href="{{ route('article.index') }}" class="px-4 py-2 bg-gray-100 text-gray-700 rounded-full hover:bg-gray-200 transition text-sm">
+                <a href="{{ url('/berita') }}" class="px-4 py-2 bg-gray-100 text-gray-700 rounded-full hover:bg-gray-200 transition text-sm">
                     Berita
                 </a>
-                <a href="{{ route('event.index') }}" class="px-4 py-2 bg-gray-100 text-gray-700 rounded-full hover:bg-gray-200 transition text-sm">
+                <a href="{{ url('/agenda') }}" class="px-4 py-2 bg-gray-100 text-gray-700 rounded-full hover:bg-gray-200 transition text-sm">
                     Agenda
                 </a>
-                <a href="{{ route('dosen.index') }}" class="px-4 py-2 bg-gray-100 text-gray-700 rounded-full hover:bg-gray-200 transition text-sm">
+                <a href="{{ url('/dosen') }}" class="px-4 py-2 bg-gray-100 text-gray-700 rounded-full hover:bg-gray-200 transition text-sm">
                     Dosen
                 </a>
-                <a href="{{ route('contact.index') }}" class="px-4 py-2 bg-gray-100 text-gray-700 rounded-full hover:bg-gray-200 transition text-sm">
+                <a href="{{ url('/kontak') }}" class="px-4 py-2 bg-gray-100 text-gray-700 rounded-full hover:bg-gray-200 transition text-sm">
                     Kontak
                 </a>
             </div>

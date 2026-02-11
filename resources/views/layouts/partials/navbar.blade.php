@@ -60,7 +60,7 @@
         <div class="flex items-center justify-between h-20">
             {{-- Logo (cascading: prodi → fakultas → universitas → default) --}}
             <div class="flex-shrink-0">
-                <a href="{{ route('home') }}" class="flex items-center">
+                <a href="{{ url('/') }}" class="flex items-center">
                     <img src="{{ $logos['logo'] ?? asset('images/logo-ubg-label.png') }}" alt="{{ $settings['site_name'] ?? 'Logo' }}" class="h-14 w-auto">
                 </a>
             </div>
@@ -83,10 +83,14 @@
                     @endforeach
                 @else
                     {{-- Fallback jika menu kosong --}}
-                    <a href="{{ route('home') }}" class="px-4 py-2 text-gray-700 hover:text-blue-600 hover:bg-blue-50 rounded-lg font-medium transition {{ request()->routeIs('home') ? 'text-blue-600 bg-blue-50' : '' }}">Beranda</a>
-                    <a href="{{ route('article.index') }}" class="px-4 py-2 text-gray-700 hover:text-blue-600 hover:bg-blue-50 rounded-lg font-medium transition">Berita</a>
-                    <a href="{{ route('event.index') }}" class="px-4 py-2 text-gray-700 hover:text-blue-600 hover:bg-blue-50 rounded-lg font-medium transition">Agenda</a>
-                    <a href="{{ route('contact.index') }}" class="px-4 py-2 text-gray-700 hover:text-blue-600 hover:bg-blue-50 rounded-lg font-medium transition">Kontak</a>
+                    @php
+                        // Use current URL for fallback to ensure correct domain
+                        $baseUrl = url('/');
+                    @endphp
+                    <a href="{{ $baseUrl }}" class="px-4 py-2 text-gray-700 hover:text-blue-600 hover:bg-blue-50 rounded-lg font-medium transition {{ request()->is('/') ? 'text-blue-600 bg-blue-50' : '' }}">Beranda</a>
+                    <a href="{{ $baseUrl }}/berita" class="px-4 py-2 text-gray-700 hover:text-blue-600 hover:bg-blue-50 rounded-lg font-medium transition">Berita</a>
+                    <a href="{{ $baseUrl }}/agenda" class="px-4 py-2 text-gray-700 hover:text-blue-600 hover:bg-blue-50 rounded-lg font-medium transition">Agenda</a>
+                    <a href="{{ $baseUrl }}/kontak" class="px-4 py-2 text-gray-700 hover:text-blue-600 hover:bg-blue-50 rounded-lg font-medium transition">Kontak</a>
                 @endif
             </div>
 
@@ -133,10 +137,13 @@
                 @endforeach
             @else
                 {{-- Fallback jika menu kosong --}}
-                <a href="{{ route('home') }}" class="block px-4 py-3 text-gray-700 hover:bg-blue-50 hover:text-blue-600 rounded-lg font-medium">Beranda</a>
-                <a href="{{ route('article.index') }}" class="block px-4 py-3 text-gray-700 hover:bg-blue-50 hover:text-blue-600 rounded-lg font-medium">Berita</a>
-                <a href="{{ route('event.index') }}" class="block px-4 py-3 text-gray-700 hover:bg-blue-50 hover:text-blue-600 rounded-lg font-medium">Agenda</a>
-                <a href="{{ route('contact.index') }}" class="block px-4 py-3 text-gray-700 hover:bg-blue-50 hover:text-blue-600 rounded-lg font-medium">Kontak</a>
+                @php
+                    $baseUrl = url('/');
+                @endphp
+                <a href="{{ $baseUrl }}" class="block px-4 py-3 text-gray-700 hover:bg-blue-50 hover:text-blue-600 rounded-lg font-medium">Beranda</a>
+                <a href="{{ $baseUrl }}/berita" class="block px-4 py-3 text-gray-700 hover:bg-blue-50 hover:text-blue-600 rounded-lg font-medium">Berita</a>
+                <a href="{{ $baseUrl }}/agenda" class="block px-4 py-3 text-gray-700 hover:bg-blue-50 hover:text-blue-600 rounded-lg font-medium">Agenda</a>
+                <a href="{{ $baseUrl }}/kontak" class="block px-4 py-3 text-gray-700 hover:bg-blue-50 hover:text-blue-600 rounded-lg font-medium">Kontak</a>
                 <div class="pt-4 border-t">
                     @php
                         $adminUrl = 'https://profil.' . config('app.domain', 'ubg.ac.id') . '/admin';
