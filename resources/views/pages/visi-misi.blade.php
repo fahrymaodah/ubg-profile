@@ -4,14 +4,10 @@
 
 @section('content')
 @php
-    // Get profil data from unit model or settings
-    $visi = $unit?->visi ?? Setting::getValue('profil_visi') ?? '';
-    $misiRaw = $unit?->misi ?? Setting::getValue('profil_misi') ?? '[]';
-    $tujuanRaw = $unit?->tujuan ?? Setting::getValue('profil_tujuan') ?? '[]';
-    
-    // Parse repeater data if stored as JSON
-    $misiItems = is_string($misiRaw) ? (json_decode($misiRaw, true) ?? []) : ($misiRaw ?? []);
-    $tujuanItems = is_string($tujuanRaw) ? (json_decode($tujuanRaw, true) ?? []) : ($tujuanRaw ?? []);
+    // Get profil data (already shared and parsed by middleware)
+    $visi = $profil['visi'] ?? '';
+    $misiItems = $profil['misi'] ?? [];
+    $tujuanItems = $profil['tujuan'] ?? [];
 @endphp
 <div class="bg-white">
     {{-- Hero Section --}}

@@ -17,15 +17,9 @@ class AppConfigService
 
     /**
      * Check if license validation is enabled
-     * Always enabled in production for security
      */
     public function isEnabled(): bool
     {
-        // Always enabled in production - cannot be bypassed
-        if (app()->environment('production')) {
-            return true;
-        }
-        
         return config('system.enabled', true);
     }
 
