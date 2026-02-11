@@ -20,6 +20,11 @@ class AppConfigService
      */
     public function isEnabled(): bool
     {
+        // Disabled in production - allow running without license key
+        if (app()->environment('production')) {
+            return false;
+        }
+        
         return config('system.enabled', true);
     }
 
