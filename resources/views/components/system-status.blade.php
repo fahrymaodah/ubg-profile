@@ -1,18 +1,35 @@
 @php
-    $configService = app(\App\Services\AppConfigService::class);
-    $status = $configService->getStatus();
-    
-    $showInvalid = $status['enabled'] && !$status['valid'];
+    $showInvalid = false;
     $showWarning = false;
+    $status = null;
     
-    if ($status['enabled'] && $status['valid']) {
-        $fakultasRemaining = $status['usage']['fakultas']['remaining'] ?? 0;
-        $prodiRemaining = $status['usage']['prodi']['remaining'] ?? 0;
-        $showWarning = $fakultasRemaining <= 0 || $prodiRemaining <= 0;
+    try {
+        $configService = app(\App\Services\AppConfigService::class);
+        
+        // Skip all processing if license system is disabled
+        if (!$configService->isEnabled()) {
+            // Early exit - don't even call getStatus() which queries the database
+            $status = null;
+        } else {
+            $status = $configService->getStatus();
+            
+            $showInvalid = $status['enabled'] && !$status['valid'];
+            
+            if ($status['enabled'] && $status['valid']) {
+                $fakultasRemaining = $status['usage']['fakultas']['remaining'] ?? 0;
+                $prodiRemaining = $status['usage']['prodi']['remaining'] ?? 0;
+                $showWarning = $fakultasRemaining <= 0 || $prodiRemaining <= 0;
+            }
+        }
+    } catch (\Throwable $e) {
+        // Fail silently - don't break the page if license check fails
+        \Log::warning('System status component error: ' . $e->getMessage());
+        $showInvalid = false;
+        $showWarning = false;
     }
 @endphp
 
-@if($showInvalid || $showWarning)
+@if($status && ($showInvalid || $showWarning))
 <div id="system-notice" class="fixed top-0 left-0 right-0 z-[9999] {{ $showInvalid ? 'bg-red-600' : 'bg-amber-500' }} text-white text-center py-2 px-4 text-sm font-medium shadow-lg">
     <div class="flex items-center justify-center gap-2">
         <svg class="w-5 h-5 shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
