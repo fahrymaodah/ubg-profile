@@ -26,11 +26,11 @@
                     {!! $fakultas->deskripsi ?? 'Fakultas yang berkomitmen untuk menghasilkan lulusan berkualitas dan profesional di bidangnya.' !!}
                 </div>
                 <div class="flex flex-wrap gap-4">
-                    <a href="{{ route('page.show', 'visi-misi') }}" 
+                    <a href="{{ route('page.show', 'visi-misi', false) }}" 
                        class="inline-flex items-center px-6 py-3 bg-blue-600 text-white font-semibold rounded-lg hover:bg-blue-700 transition">
                         Visi & Misi
                     </a>
-                    <a href="{{ route('dosen.index') }}" 
+                    <a href="{{ route('dosen.index', [], false) }}" 
                        class="inline-flex items-center px-6 py-3 border-2 border-blue-600 text-blue-600 font-semibold rounded-lg hover:bg-blue-50 transition">
                         Daftar Dosen
                     </a>
@@ -128,7 +128,7 @@
                 <h2 class="text-3xl md:text-4xl font-bold text-gray-900 mb-2">Dosen</h2>
                 <p class="text-lg text-gray-600">Tenaga pengajar profesional dan berpengalaman</p>
             </div>
-            <a href="{{ route('dosen.index') }}" 
+            <a href="{{ route('dosen.index', [], false) }}" 
                class="hidden md:inline-flex items-center px-4 py-2 text-blue-600 font-medium hover:bg-blue-50 rounded-lg transition">
                 Lihat Semua
                 <svg class="ml-2 w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -155,7 +155,7 @@
                 <h2 class="text-3xl md:text-4xl font-bold text-gray-900 mb-2">Berita Terkini</h2>
                 <p class="text-lg text-gray-600">Informasi dan berita terbaru dari {{ $fakultas->nama }}</p>
             </div>
-            <a href="{{ route('article.index') }}" 
+            <a href="{{ route('article.index', [], false) }}" 
                class="hidden md:inline-flex items-center px-4 py-2 text-blue-600 font-medium hover:bg-blue-50 rounded-lg transition">
                 Lihat Semua
                 <svg class="ml-2 w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -182,7 +182,7 @@
                 <h2 class="text-3xl md:text-4xl font-bold text-gray-900 mb-2">Prestasi</h2>
                 <p class="text-lg text-gray-600">Pencapaian mahasiswa dan dosen</p>
             </div>
-            <a href="{{ route('prestasi.index') }}" 
+            <a href="{{ route('prestasi.index', [], false) }}" 
                class="hidden md:inline-flex items-center px-4 py-2 text-blue-600 font-medium hover:bg-blue-50 rounded-lg transition">
                 Lihat Semua
             </a>
@@ -204,7 +204,7 @@
         <p class="text-lg text-blue-200 mb-8 max-w-2xl mx-auto">
             Hubungi kami untuk informasi lebih lanjut tentang {{ $fakultas->nama }}
         </p>
-        <a href="{{ route('contact.index') }}" class="inline-flex items-center px-8 py-4 bg-white text-blue-600 font-semibold rounded-lg hover:bg-gray-100 transition text-lg">
+        <a href="{{ route('contact.index', [], false) }}" class="inline-flex items-center px-8 py-4 bg-white text-blue-600 font-semibold rounded-lg hover:bg-gray-100 transition text-lg">
             Hubungi Kami
         </a>
     </div>

@@ -16,9 +16,10 @@
 
     {{-- Filters --}}
     <x-filter-panel 
-        :action="route('gallery.index')" 
-        :reset-url="route('gallery.index')"
+        :action="route('gallery.index', [], false)" 
+        :reset-url="route('gallery.index', [], false)"
         :has-active-filters="request()->hasAny(['q', 'type', 'tahun'])"
+        :single-row="true"
         :show-search="true"
         search-placeholder="Cari album galeri..."
         search-name="q"
@@ -62,9 +63,26 @@
         <div class="bg-white rounded-xl shadow-md overflow-hidden group hover:shadow-lg transition-all duration-300">
             {{-- Cover Image --}}
             <div class="relative h-56 overflow-hidden">
-                @if($gallery->cover || ($gallery->images && count($gallery->images) > 0))
-                <img src="{{ Storage::url($gallery->cover ?? $gallery->images[0]) }}" 
-                     alt="{{ $gallery->judul }}"
+                @php
+                    $galleryTitle = $gallery->judul ?? $gallery->title;
+                    $galleryImages = [];
+                    foreach ($gallery->images ?? [] as $imageItem) {
+                        $path = is_array($imageItem) ? ($imageItem['path'] ?? null) : $imageItem;
+                        if ($path) {
+                            $galleryImages[] = $path;
+                        }
+                    }
+                    $coverPath = $gallery->file;
+                    $coverUrl = null;
+                    if ($coverPath) {
+                        $coverUrl = \Illuminate\Support\Str::startsWith($coverPath, ['http://', 'https://'])
+                            ? $coverPath
+                            : Storage::url($coverPath);
+                    }
+                @endphp
+                @if($coverUrl)
+                <img src="{{ $coverUrl }}" 
+                     alt="{{ $galleryTitle }}"
                      class="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500">
                 @else
                 <div class="w-full h-full bg-gradient-to-br from-blue-400 to-blue-600 flex items-center justify-center">
@@ -75,18 +93,18 @@
                 @endif
 
                 {{-- Image Count Badge --}}
-                @if($gallery->images && count($gallery->images) > 0)
+                @if(count($galleryImages) > 0)
                 <div class="absolute top-3 right-3 px-3 py-1 bg-black/70 text-white text-sm rounded-full flex items-center">
                     <svg class="w-4 h-4 mr-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14m-6-6h.01M6 20h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z"/>
                     </svg>
-                    {{ count($gallery->images) }}
+                    {{ count($galleryImages) }}
                 </div>
                 @endif
 
                 {{-- Overlay --}}
                 <div class="absolute inset-0 bg-black/50 opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex items-center justify-center">
-                    <a href="{{ route('gallery.show', $gallery->id) }}" 
+                          <a href="{{ route('gallery.show', $gallery->id, false) }}" 
                        class="px-6 py-2 bg-white text-gray-900 font-semibold rounded-lg hover:bg-blue-600 hover:text-white transition">
                         Lihat Album
                     </a>
@@ -118,14 +136,14 @@
                 @endif
 
                 <h3 class="text-lg font-bold text-gray-900 mb-2 group-hover:text-blue-600 transition">
-                    <a href="{{ route('gallery.show', $gallery->id) }}">
-                        {{ $gallery->judul }}
+                    <a href="{{ route('gallery.show', $gallery->id, false) }}">
+                        {{ $galleryTitle }}
                     </a>
                 </h3>
 
-                @if($gallery->deskripsi)
+                @if($gallery->deskripsi ?? $gallery->description)
                 <p class="text-sm text-gray-600 mb-3 line-clamp-2">
-                    {{ Str::limit(strip_tags($gallery->deskripsi), 100) }}
+                    {{ Str::limit(strip_tags($gallery->deskripsi ?? $gallery->description), 100) }}
                 </p>
                 @endif
 

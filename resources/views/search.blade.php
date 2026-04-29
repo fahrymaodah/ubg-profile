@@ -14,7 +14,7 @@
 
     {{-- Search Form --}}
     <div class="max-w-2xl mx-auto mb-8">
-        <form action="{{ route('search') }}" method="GET" class="relative">
+        <form action="{{ route('search', [], false) }}" method="GET" class="relative">
             <input type="text" 
                    name="q" 
                    value="{{ $query ?? '' }}"
@@ -34,39 +34,39 @@
     {{-- Type Filters --}}
     @if(isset($query) && $query)
     <div class="flex justify-center gap-2 mb-8 flex-wrap">
-        <a href="{{ route('search', ['q' => $query, 'type' => 'all']) }}" 
+        <a href="{{ route('search', ['q' => $query, 'type' => 'all'], false) }}" 
            class="px-4 py-2 rounded-full text-sm font-medium transition {{ ($type ?? 'all') === 'all' ? 'bg-blue-600 text-white' : 'bg-gray-100 text-gray-700 hover:bg-gray-200' }}">
             Semua
         </a>
-        <a href="{{ route('search', ['q' => $query, 'type' => 'article']) }}" 
+        <a href="{{ route('search', ['q' => $query, 'type' => 'article'], false) }}" 
            class="px-4 py-2 rounded-full text-sm font-medium transition {{ ($type ?? '') === 'article' ? 'bg-blue-600 text-white' : 'bg-gray-100 text-gray-700 hover:bg-gray-200' }}">
             Berita
         </a>
-        <a href="{{ route('search', ['q' => $query, 'type' => 'event']) }}" 
+        <a href="{{ route('search', ['q' => $query, 'type' => 'event'], false) }}" 
            class="px-4 py-2 rounded-full text-sm font-medium transition {{ ($type ?? '') === 'event' ? 'bg-green-600 text-white' : 'bg-gray-100 text-gray-700 hover:bg-gray-200' }}">
             Agenda
         </a>
-        <a href="{{ route('search', ['q' => $query, 'type' => 'dosen']) }}" 
+        <a href="{{ route('search', ['q' => $query, 'type' => 'dosen'], false) }}" 
            class="px-4 py-2 rounded-full text-sm font-medium transition {{ ($type ?? '') === 'dosen' ? 'bg-purple-600 text-white' : 'bg-gray-100 text-gray-700 hover:bg-gray-200' }}">
             Dosen
         </a>
-        <a href="{{ route('search', ['q' => $query, 'type' => 'prestasi']) }}" 
+        <a href="{{ route('search', ['q' => $query, 'type' => 'prestasi'], false) }}" 
            class="px-4 py-2 rounded-full text-sm font-medium transition {{ ($type ?? '') === 'prestasi' ? 'bg-amber-600 text-white' : 'bg-gray-100 text-gray-700 hover:bg-gray-200' }}">
             Prestasi
         </a>
-        <a href="{{ route('search', ['q' => $query, 'type' => 'gallery']) }}" 
+        <a href="{{ route('search', ['q' => $query, 'type' => 'gallery'], false) }}" 
            class="px-4 py-2 rounded-full text-sm font-medium transition {{ ($type ?? '') === 'gallery' ? 'bg-pink-600 text-white' : 'bg-gray-100 text-gray-700 hover:bg-gray-200' }}">
             Galeri
         </a>
-        <a href="{{ route('search', ['q' => $query, 'type' => 'download']) }}" 
+        <a href="{{ route('search', ['q' => $query, 'type' => 'download'], false) }}" 
            class="px-4 py-2 rounded-full text-sm font-medium transition {{ ($type ?? '') === 'download' ? 'bg-teal-600 text-white' : 'bg-gray-100 text-gray-700 hover:bg-gray-200' }}">
             Unduhan
         </a>
-        <a href="{{ route('search', ['q' => $query, 'type' => 'announcement']) }}" 
+        <a href="{{ route('search', ['q' => $query, 'type' => 'announcement'], false) }}" 
            class="px-4 py-2 rounded-full text-sm font-medium transition {{ ($type ?? '') === 'announcement' ? 'bg-red-600 text-white' : 'bg-gray-100 text-gray-700 hover:bg-gray-200' }}">
             Pengumuman
         </a>
-        <a href="{{ route('search', ['q' => $query, 'type' => 'page']) }}" 
+        <a href="{{ route('search', ['q' => $query, 'type' => 'page'], false) }}" 
            class="px-4 py-2 rounded-full text-sm font-medium transition {{ ($type ?? '') === 'page' ? 'bg-gray-600 text-white' : 'bg-gray-100 text-gray-700 hover:bg-gray-200' }}">
             Halaman
         </a>
@@ -119,7 +119,7 @@
                             @endif
                         </div>
                         <h4 class="font-semibold text-gray-900 mb-1">
-                            <a href="{{ route('article.show', $article) }}" class="hover:text-blue-600">
+                            <a href="{{ route('article.show', $article, false) }}" class="hover:text-blue-600">
                                 {!! preg_replace('/(' . preg_quote($query, '/') . ')/i', '<mark class="bg-yellow-200 px-0.5 rounded">$1</mark>', e($article->title)) !!}
                             </a>
                         </h4>
@@ -166,7 +166,7 @@
                             </span>
                         </div>
                         <h4 class="font-semibold text-gray-900 mb-1">
-                            <a href="{{ route('event.show', $event) }}" class="hover:text-green-600">
+                            <a href="{{ route('event.show', $event, false) }}" class="hover:text-green-600">
                                 {!! preg_replace('/(' . preg_quote($query, '/') . ')/i', '<mark class="bg-yellow-200 px-0.5 rounded">$1</mark>', e($event->title)) !!}
                             </a>
                         </h4>
@@ -223,7 +223,7 @@
                         <span class="inline-block px-2 py-0.5 text-xs font-medium bg-blue-100 text-blue-700 rounded mb-1">{{ $d->jabatan_fungsional }}</span>
                         @endif
                         <h4 class="font-semibold text-gray-900">
-                            <a href="{{ route('dosen.show', $d->nidn) }}" class="hover:text-purple-600">
+                            <a href="{{ route('dosen.show', $d->nidn, false) }}" class="hover:text-purple-600">
                                 {!! preg_replace('/(' . preg_quote($query, '/') . ')/i', '<mark class="bg-yellow-200 px-0.5 rounded">$1</mark>', e($d->nama_lengkap)) !!}
                             </a>
                         </h4>
@@ -267,7 +267,7 @@
                             <span class="inline-block px-2 py-0.5 text-xs font-medium bg-gray-100 text-gray-700 rounded">{{ $p->tingkat?->label() }}</span>
                         </div>
                         <h4 class="font-semibold text-gray-900 mb-1">
-                            <a href="{{ route('prestasi.show', $p) }}" class="hover:text-amber-600">
+                            <a href="{{ route('prestasi.show', $p, false) }}" class="hover:text-amber-600">
                                 {!! preg_replace('/(' . preg_quote($query, '/') . ')/i', '<mark class="bg-yellow-200 px-0.5 rounded">$1</mark>', e($p->judul)) !!}
                             </a>
                         </h4>
@@ -295,7 +295,7 @@
             </h3>
             <div class="grid md:grid-cols-2 lg:grid-cols-3 gap-4">
                 @foreach($galleries as $gallery)
-                <a href="{{ route('gallery.show', $gallery) }}" class="bg-white rounded-xl shadow-md overflow-hidden group hover:shadow-lg transition">
+                <a href="{{ route('gallery.show', $gallery, false) }}" class="bg-white rounded-xl shadow-md overflow-hidden group hover:shadow-lg transition">
                     <div class="relative h-40 overflow-hidden">
                         @if($gallery->file)
                         <img src="{{ Storage::url($gallery->file) }}" alt="{{ $gallery->title }}" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300">
@@ -366,7 +366,7 @@
                         @endif
                         <span class="text-xs text-gray-500">{{ $download->file_size ? number_format($download->file_size / 1024, 0) . ' KB' : '' }} • {{ $download->download_count ?? 0 }} unduhan</span>
                     </div>
-                    <a href="{{ route('download.file', $download) }}" class="flex-shrink-0 p-2 bg-teal-100 text-teal-600 rounded-lg hover:bg-teal-200 transition">
+                    <a href="{{ route('download.file', $download, false) }}" class="flex-shrink-0 p-2 bg-teal-100 text-teal-600 rounded-lg hover:bg-teal-200 transition">
                         <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-4l-4 4m0 0l-4-4m4 4V4"/>
                         </svg>
@@ -399,7 +399,7 @@
                     ];
                     $config = $priorityConfig[$announcement->priority] ?? $priorityConfig['normal'];
                 @endphp
-                <a href="{{ route('announcement.show', $announcement) }}" class="bg-white rounded-xl shadow-md p-5 hover:shadow-lg transition flex items-start gap-4 group">
+                <a href="{{ route('announcement.show', $announcement, false) }}" class="bg-white rounded-xl shadow-md p-5 hover:shadow-lg transition flex items-start gap-4 group">
                     <div class="flex-shrink-0 w-10 h-10 {{ $config['bg'] }} rounded-full flex items-center justify-center">
                         <span class="text-lg">{{ $config['icon'] }}</span>
                     </div>
@@ -443,7 +443,7 @@
                     <div class="flex-1 min-w-0">
                         <span class="inline-block px-2 py-0.5 text-xs font-medium bg-gray-100 text-gray-700 rounded mb-2">Halaman</span>
                         <h4 class="font-semibold text-gray-900 mb-1">
-                            <a href="{{ route('page.show', $page) }}" class="hover:text-blue-600">
+                            <a href="{{ route('page.show', $page, false) }}" class="hover:text-blue-600">
                                 {!! preg_replace('/(' . preg_quote($query, '/') . ')/i', '<mark class="bg-yellow-200 px-0.5 rounded">$1</mark>', e($page->title)) !!}
                             </a>
                         </h4>
@@ -492,25 +492,25 @@
     <div class="mt-8 max-w-2xl mx-auto">
         <h3 class="text-lg font-semibold text-gray-900 mb-4 text-center">Jelajahi</h3>
         <div class="grid grid-cols-2 md:grid-cols-4 gap-4">
-            <a href="{{ route('article.index') }}" class="p-4 bg-blue-50 rounded-xl text-center hover:bg-blue-100 transition">
+            <a href="{{ route('article.index', [], false) }}" class="p-4 bg-blue-50 rounded-xl text-center hover:bg-blue-100 transition">
                 <svg class="w-8 h-8 text-blue-600 mx-auto mb-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 20H5a2 2 0 01-2-2V6a2 2 0 012-2h10a2 2 0 012 2v1m2 13a2 2 0 01-2-2V7m2 13a2 2 0 002-2V9a2 2 0 00-2-2h-2m-4-3H9M7 16h6M7 8h6v4H7V8z"/>
                 </svg>
                 <span class="text-sm font-medium text-gray-700">Berita</span>
             </a>
-            <a href="{{ route('event.index') }}" class="p-4 bg-green-50 rounded-xl text-center hover:bg-green-100 transition">
+            <a href="{{ route('event.index', [], false) }}" class="p-4 bg-green-50 rounded-xl text-center hover:bg-green-100 transition">
                 <svg class="w-8 h-8 text-green-600 mx-auto mb-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z"/>
                 </svg>
                 <span class="text-sm font-medium text-gray-700">Agenda</span>
             </a>
-            <a href="{{ route('dosen.index') }}" class="p-4 bg-purple-50 rounded-xl text-center hover:bg-purple-100 transition">
+            <a href="{{ route('dosen.index', [], false) }}" class="p-4 bg-purple-50 rounded-xl text-center hover:bg-purple-100 transition">
                 <svg class="w-8 h-8 text-purple-600 mx-auto mb-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4.354a4 4 0 110 5.292M15 21H3v-1a6 6 0 0112 0v1zm0 0h6v-1a6 6 0 00-9-5.197M13 7a4 4 0 11-8 0 4 4 0 018 0z"/>
                 </svg>
                 <span class="text-sm font-medium text-gray-700">Dosen</span>
             </a>
-            <a href="{{ route('prestasi.index') }}" class="p-4 bg-amber-50 rounded-xl text-center hover:bg-amber-100 transition">
+            <a href="{{ route('prestasi.index', [], false) }}" class="p-4 bg-amber-50 rounded-xl text-center hover:bg-amber-100 transition">
                 <svg class="w-8 h-8 text-amber-600 mx-auto mb-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 3v4M3 5h4M6 17v4m-2-2h4m5-16l2.286 6.857L21 12l-5.714 2.143L13 21l-2.286-6.857L5 12l5.714-2.143L13 3z"/>
                 </svg>

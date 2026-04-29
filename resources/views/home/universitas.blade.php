@@ -26,14 +26,14 @@
                     {!! $settings['site_description'] ?? 'Universitas Bumigora adalah institusi pendidikan tinggi yang berkomitmen untuk menghasilkan lulusan berkualitas dan berdaya saing tinggi.' !!}
                 </div>
                 <div class="flex flex-wrap gap-4">
-                    <a href="{{ route('page.show', 'visi-misi') }}" 
+                    <a href="{{ route('page.show', 'visi-misi', false) }}" 
                        class="inline-flex items-center px-6 py-3 bg-blue-600 text-white font-semibold rounded-lg hover:bg-blue-700 transition">
                         Visi & Misi
                         <svg class="ml-2 w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 8l4 4m0 0l-4 4m4-4H3"/>
                         </svg>
                     </a>
-                    <a href="{{ route('page.show', 'sejarah') }}" 
+                    <a href="{{ route('page.show', 'sejarah', false) }}" 
                        class="inline-flex items-center px-6 py-3 border-2 border-blue-600 text-blue-600 font-semibold rounded-lg hover:bg-blue-50 transition">
                         Sejarah
                     </a>
@@ -123,7 +123,7 @@
                 <h2 class="text-3xl md:text-4xl font-bold text-gray-900 mb-2">Berita Terkini</h2>
                 <p class="text-lg text-gray-600">Informasi dan berita terbaru dari kampus</p>
             </div>
-            <a href="{{ route('article.index') }}" 
+            <a href="{{ route('article.index', [], false) }}" 
                class="hidden md:inline-flex items-center px-4 py-2 text-blue-600 font-medium hover:bg-blue-50 rounded-lg transition">
                 Lihat Semua
                 <svg class="ml-2 w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -139,7 +139,7 @@
         </div>
         
         <div class="mt-8 text-center md:hidden">
-            <a href="{{ route('article.index') }}" 
+            <a href="{{ route('article.index', [], false) }}" 
                class="inline-flex items-center px-6 py-3 bg-blue-600 text-white font-semibold rounded-lg hover:bg-blue-700 transition">
                 Lihat Semua Berita
             </a>
@@ -157,7 +157,7 @@
                 <h2 class="text-3xl md:text-4xl font-bold text-gray-900 mb-2">Agenda Kegiatan</h2>
                 <p class="text-lg text-gray-600">Kegiatan dan acara yang akan datang</p>
             </div>
-            <a href="{{ route('event.index') }}" 
+            <a href="{{ route('event.index', [], false) }}" 
                class="hidden md:inline-flex items-center px-4 py-2 text-blue-600 font-medium hover:bg-blue-50 rounded-lg transition">
                 Lihat Semua
                 <svg class="ml-2 w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -184,7 +184,7 @@
                 <h2 class="text-3xl md:text-4xl font-bold text-gray-900 mb-2">Prestasi</h2>
                 <p class="text-lg text-gray-600">Pencapaian dan prestasi terbaru</p>
             </div>
-            <a href="{{ route('prestasi.index') }}" 
+            <a href="{{ route('prestasi.index', [], false) }}" 
                class="hidden md:inline-flex items-center px-4 py-2 text-blue-600 font-medium hover:bg-blue-50 rounded-lg transition">
                 Lihat Semua
                 <svg class="ml-2 w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -213,7 +213,7 @@
             <a href="#" class="inline-flex items-center px-8 py-4 bg-white text-blue-600 font-semibold rounded-lg hover:bg-gray-100 transition text-lg">
                 Daftar Sekarang
             </a>
-            <a href="{{ route('contact.index') }}" class="inline-flex items-center px-8 py-4 border-2 border-white text-white font-semibold rounded-lg hover:bg-white hover:text-blue-600 transition text-lg">
+            <a href="{{ route('contact.index', [], false) }}" class="inline-flex items-center px-8 py-4 border-2 border-white text-white font-semibold rounded-lg hover:bg-white hover:text-blue-600 transition text-lg">
                 Hubungi Kami
             </a>
         </div>

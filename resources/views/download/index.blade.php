@@ -16,9 +16,10 @@
 
     {{-- Filters --}}
     <x-filter-panel 
-        :action="route('download.index')" 
-        :reset-url="route('download.index')"
+        :action="route('download.index', [], false)" 
+        :reset-url="route('download.index', [], false)"
         :has-active-filters="request()->hasAny(['q', 'kategori', 'tipe'])"
+        :single-row="true"
         :show-search="true"
         search-placeholder="Cari dokumen..."
         search-name="q"
@@ -74,7 +75,7 @@
             $iconStyle = $iconColors[$extension] ?? ['bg' => 'bg-gray-100', 'text' => 'text-gray-600', 'icon' => strtoupper($extension)];
         @endphp
         <div class="bg-white rounded-xl shadow-md p-5 hover:shadow-lg transition">
-            <div class="flex items-center justify-between">
+            <div class="flex flex-col md:flex-row md:items-center md:justify-between">
                 <div class="flex items-center space-x-4">
                     {{-- File Icon --}}
                     <div class="flex-shrink-0 w-14 h-14 {{ $iconStyle['bg'] }} rounded-lg flex items-center justify-center">
@@ -130,9 +131,9 @@
                 </div>
                 
                 {{-- Download Button --}}
-                <div class="flex-shrink-0 ml-4">
-                    <a href="{{ route('download.file', $download) }}" 
-                       class="inline-flex items-center px-5 py-2.5 bg-blue-600 text-white font-medium rounded-lg hover:bg-blue-700 transition">
+                <div class="mt-4 md:mt-0 md:ml-auto flex-shrink-0">
+                    <a href="{{ route('download.file', $download, false) }}" 
+                       class="w-full md:w-auto inline-flex items-center justify-center px-5 py-2.5 bg-blue-600 text-white font-medium rounded-lg hover:bg-blue-700 transition">
                         <svg class="w-5 h-5 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-4l-4 4m0 0l-4-4m4 4V4"/>
                         </svg>
@@ -164,7 +165,7 @@
         <h2 class="text-2xl font-bold text-gray-900 mb-6">Kategori Dokumen</h2>
         <div class="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4">
             @foreach($categories as $cat)
-            <a href="{{ route('download.index', ['kategori' => $cat]) }}" 
+            <a href="{{ route('download.index', ['kategori' => $cat], false) }}" 
                class="bg-white rounded-xl shadow-md p-5 hover:shadow-lg transition group">
                 <div class="flex items-center space-x-3">
                     <div class="w-12 h-12 bg-blue-100 rounded-lg flex items-center justify-center group-hover:bg-blue-200 transition">

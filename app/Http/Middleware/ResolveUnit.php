@@ -21,6 +21,11 @@ class ResolveUnit
      */
     public function handle(Request $request, Closure $next): Response
     {
+        if ($request->route()?->hasParameter('subdomain')) {
+            // Prevent subdomain param from shifting controller arguments.
+            $request->route()->forgetParameter('subdomain');
+        }
+
         // Development mode: Allow unit override via query parameter
         if (app()->environment('local') && $request->has('_unit')) {
             $unitParam = $request->query('_unit');

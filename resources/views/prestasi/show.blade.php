@@ -4,7 +4,7 @@
 
 @section('content')
 <x-breadcrumb :items="[
-    ['label' => 'Prestasi', 'url' => route('prestasi.index')],
+    ['label' => 'Prestasi', 'url' => route('prestasi.index', [], false)],
     ['label' => Str::limit($prestasi->judul, 30)]
 ]" />
 
@@ -13,7 +13,7 @@
         {{-- Main Content --}}
         <div class="lg:col-span-2">
             {{-- Header --}}
-            <div class="bg-white rounded-xl shadow-lg overflow-hidden mb-8">
+            <div class="bg-white rounded-xl shadow-lg overflow-hidden">
                 {{-- Image --}}
                 @if($prestasi->foto)
                 <div class="h-64 md:h-96 overflow-hidden">
@@ -169,7 +169,7 @@
                 <h2 class="text-lg font-bold text-gray-900 mb-4">Prestasi Lainnya</h2>
                 <div class="space-y-4">
                     @foreach($relatedPrestasi as $related)
-                    <a href="{{ route('prestasi.show', $related->id) }}" class="flex gap-3 group">
+                    <a href="{{ route('prestasi.show', $related->id, false) }}" class="flex gap-3 group">
                         <div class="flex-shrink-0 w-16 h-16 rounded-lg overflow-hidden">
                             @if($related->foto)
                             <img src="{{ Storage::url($related->foto) }}" 

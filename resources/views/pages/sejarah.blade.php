@@ -17,7 +17,7 @@
     {{-- Hero Section --}}
     <div class="bg-gradient-to-r from-amber-600 to-amber-800 text-white py-16">
         <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-            <x-breadcrumb :items="[['label' => 'Beranda', 'url' => route('home')], ['label' => 'Profil'], ['label' => 'Sejarah']]" :wrapper="false" />
+            <x-breadcrumb :items="[['label' => 'Beranda', 'url' => route('home', [], false)], ['label' => 'Profil'], ['label' => 'Sejarah']]" :wrapper="false" />
             <h1 class="text-4xl md:text-5xl font-bold mb-4">Sejarah</h1>
             <p class="text-xl text-amber-200">Perjalanan {{ $settings['site_name'] ?? config('app.name') }}</p>
         </div>
@@ -146,7 +146,7 @@
                 <div class="bg-amber-50 rounded-xl p-6 text-center">
                     <h4 class="font-bold text-gray-900 mb-2">Ingin Bergabung?</h4>
                     <p class="text-sm text-gray-600 mb-4">Jadilah bagian dari sejarah kami.</p>
-                    <a href="{{ route('contact.index') }}" class="inline-flex items-center px-4 py-2 bg-amber-600 text-white rounded-lg hover:bg-amber-700 transition text-sm font-medium">
+                    <a href="{{ route('contact.index', [], false) }}" class="inline-flex items-center px-4 py-2 bg-amber-600 text-white rounded-lg hover:bg-amber-700 transition text-sm font-medium">
                         Hubungi Kami
                     </a>
                 </div>

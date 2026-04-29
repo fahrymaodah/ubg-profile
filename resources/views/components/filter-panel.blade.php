@@ -7,7 +7,24 @@
     'searchPlaceholder' => 'Cari...',
     'searchName' => 'q',
     'searchValue' => '',
+    'singleRow' => false,
+    'searchColSpanLg' => null,
+    'filtersColSpanLg' => null,
 ])
+
+@php
+    if ($singleRow) {
+        // Use custom column spans if provided, otherwise use defaults
+        $searchColSpan = $searchColSpanLg ? "lg:col-span-{$searchColSpanLg}" : 'lg:col-span-6';
+        $filtersColSpan = $filtersColSpanLg ? "lg:col-span-{$filtersColSpanLg}" : ($showSearch ? 'lg:col-span-4' : 'lg:col-span-10');
+    } else {
+        $searchColSpan = '';
+        $filtersColSpan = '';
+    }
+    $filtersGridClass = $singleRow
+        ? 'flex flex-wrap lg:flex-nowrap gap-2'
+        : 'grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4';
+@endphp
 
 <div x-data="{ open: true }" class="mb-8">
     {{-- Filter Card --}}
@@ -55,10 +72,16 @@
         {{-- Filter Form --}}
         <form action="{{ $action }}" method="{{ $method }}">
             <div x-show="open" x-cloak class="p-5" x-transition>
-                <div class="space-y-4">
+                <div class="{{ $singleRow ? 'grid grid-cols-1 lg:grid-cols-12 gap-4 items-end' : 'space-y-4' }}">
                     {{-- Search Field (if enabled) --}}
                     @if($showSearch)
-                    <div class="relative">
+                    <div @class([
+                        'relative',
+                        'lg:col-span-8' => $searchColSpanLg == 8,
+                        'lg:col-span-7' => $searchColSpanLg == 7,
+                        'lg:col-span-6' => $searchColSpanLg == 6 || !$searchColSpanLg,
+                        'lg:col-span-5' => $searchColSpanLg == 5,
+                    ])>
                         <div class="pointer-events-none absolute inset-y-0 left-0 flex items-center pl-4">
                             <svg class="size-5 text-gray-400" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
                                 <path stroke-linecap="round" stroke-linejoin="round" d="m21 21-6-6m2-5a7 7 0 1 1-14 0 7 7 0 0 1 14 0z"/>
@@ -73,12 +96,45 @@
                     @endif
 
                     {{-- Filter Fields Slot --}}
-                    <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
-                        {{ $slot }}
+                    <div @class([
+                        'lg:col-span-2' => $filtersColSpanLg == 2,
+                        'lg:col-span-3' => $filtersColSpanLg == 3,
+                        'lg:col-span-4' => $filtersColSpanLg == 4 || !$filtersColSpanLg,
+                        'lg:col-span-5' => $filtersColSpanLg == 5,
+                    ])>
+                        <div class="{{ $filtersGridClass }}">
+                            {{ $slot }}
+                        </div>
                     </div>
+
+                    {{-- Actions (single row layout) --}}
+                    @if($singleRow)
+                    <div class="lg:col-span-2">
+                        <div class="flex flex-col sm:flex-row items-center justify-end gap-3">
+                            @if($hasActiveFilters && $resetUrl)
+                            <a href="{{ $resetUrl }}" 
+                               class="w-full sm:w-auto inline-flex items-center justify-center gap-2 px-5 py-2.5 text-sm font-medium text-gray-700 bg-gray-100 hover:bg-gray-200 rounded-xl transition-all">
+                                <svg class="size-4" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" d="M16.023 9.348h4.992v-.001M2.985 19.644v-4.992m0 0h4.992m-4.993 0 3.181 3.183a8.25 8.25 0 0 0 13.803-3.7M4.031 9.865a8.25 8.25 0 0 1 13.803-3.7l3.181 3.182m0-4.991v4.99"/>
+                                </svg>
+                                Reset Filter
+                            </a>
+                            @endif
+                            
+                            <button type="submit" 
+                                    class="w-full sm:w-auto inline-flex items-center justify-center gap-2 px-6 py-2.5 text-sm font-semibold text-white bg-blue-600 hover:bg-blue-700 rounded-xl shadow-sm hover:shadow-md transition-all">
+                                <svg class="size-4" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" d="m21 21-6-6m2-5a7 7 0 1 1-14 0 7 7 0 0 1 14 0z"/>
+                                </svg>
+                                Terapkan Filter
+                            </button>
+                        </div>
+                    </div>
+                    @endif
                 </div>
 
                 {{-- Actions --}}
+                @if(!$singleRow)
                 <div class="flex flex-col sm:flex-row items-center justify-end gap-3 mt-6 pt-4 border-t border-gray-100">
                     @if($hasActiveFilters && $resetUrl)
                     <a href="{{ $resetUrl }}" 
@@ -98,6 +154,7 @@
                         Terapkan Filter
                     </button>
                 </div>
+                @endif
             </div>
         </form>
     </div>

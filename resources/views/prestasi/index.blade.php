@@ -16,9 +16,10 @@
 
     {{-- Filters --}}
     <x-filter-panel 
-        :action="route('prestasi.index')" 
-        :reset-url="route('prestasi.index')"
+        :action="route('prestasi.index', [], false)" 
+        :reset-url="route('prestasi.index', [], false)"
         :has-active-filters="request()->hasAny(['q', 'tingkat', 'kategori'])"
+        :single-row="true"
         :show-search="true"
         search-placeholder="Cari prestasi..."
         search-name="q"

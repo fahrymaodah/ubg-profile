@@ -4,7 +4,7 @@
 
 @section('content')
 <x-breadcrumb :items="[
-    ['label' => 'Agenda', 'url' => route('event.index')],
+    ['label' => 'Agenda', 'url' => route('event.index', [], false)],
     ['label' => Str::limit($event->title, 30)]
 ]" />
 
@@ -13,7 +13,7 @@
         {{-- Main Content --}}
         <div class="lg:col-span-2">
             {{-- Header Card --}}
-            <div class="bg-white rounded-xl shadow-lg overflow-hidden mb-8">
+            <div class="bg-white rounded-xl shadow-lg overflow-hidden">
                 {{-- Image --}}
                 @if($event->image)
                 <div class="h-64 md:h-80 overflow-hidden">
@@ -81,7 +81,7 @@
             
             {{-- Documents/Attachments --}}
             @if($event->dokumen)
-            <div class="bg-white rounded-xl shadow-lg p-6 mb-8">
+            <div class="bg-white rounded-xl shadow-lg p-6">
                 <h2 class="text-xl font-bold text-gray-900 mb-4">Dokumen Terkait</h2>
                 <a href="{{ Storage::url($event->dokumen) }}" 
                    target="_blank"
@@ -289,7 +289,7 @@
                 <h2 class="text-lg font-bold text-gray-900 mb-4">Agenda Lainnya</h2>
                 <div class="space-y-4">
                     @foreach($relatedEvents as $related)
-                    <a href="{{ route('event.show', $related) }}" class="flex gap-3 group">
+                    <a href="{{ route('event.show', $related, false) }}" class="flex gap-3 group">
                         <div class="flex-shrink-0 w-14 h-14 rounded-lg bg-blue-100 flex flex-col items-center justify-center">
                             <span class="text-lg font-bold text-blue-600">{{ $related->start_date->format('d') }}</span>
                             <span class="text-xs text-blue-500">{{ $related->start_date->format('M') }}</span>

@@ -50,12 +50,12 @@
             <div class="lg:col-span-1">
                 <h5 class="text-md font-semibold mb-5 text-white">Menu Utama</h5>
                 <ul class="space-y-3">
-                    <li><a href="{{ route('home') }}" class="text-gray-400 hover:text-white text-sm transition flex items-center"><span class="mr-2">→</span> Beranda</a></li>
-                    <li><a href="{{ route('article.index') }}" class="text-gray-400 hover:text-white text-sm transition flex items-center"><span class="mr-2">→</span> Berita</a></li>
-                    <li><a href="{{ route('event.index') }}" class="text-gray-400 hover:text-white text-sm transition flex items-center"><span class="mr-2">→</span> Agenda</a></li>
-                    <li><a href="{{ route('prestasi.index') }}" class="text-gray-400 hover:text-white text-sm transition flex items-center"><span class="mr-2">→</span> Prestasi</a></li>
-                    <li><a href="{{ route('gallery.index') }}" class="text-gray-400 hover:text-white text-sm transition flex items-center"><span class="mr-2">→</span> Galeri</a></li>
-                    <li><a href="{{ route('download.index') }}" class="text-gray-400 hover:text-white text-sm transition flex items-center"><span class="mr-2">→</span> Unduhan</a></li>
+                    <li><a href="{{ route('home', [], false) }}" class="text-gray-400 hover:text-white text-sm transition flex items-center"><span class="mr-2">→</span> Beranda</a></li>
+                    <li><a href="{{ route('article.index', [], false) }}" class="text-gray-400 hover:text-white text-sm transition flex items-center"><span class="mr-2">→</span> Berita</a></li>
+                    <li><a href="{{ route('event.index', [], false) }}" class="text-gray-400 hover:text-white text-sm transition flex items-center"><span class="mr-2">→</span> Agenda</a></li>
+                    <li><a href="{{ route('prestasi.index', [], false) }}" class="text-gray-400 hover:text-white text-sm transition flex items-center"><span class="mr-2">→</span> Prestasi</a></li>
+                    <li><a href="{{ route('gallery.index', [], false) }}" class="text-gray-400 hover:text-white text-sm transition flex items-center"><span class="mr-2">→</span> Galeri</a></li>
+                    <li><a href="{{ route('download.index', [], false) }}" class="text-gray-400 hover:text-white text-sm transition flex items-center"><span class="mr-2">→</span> Unduhan</a></li>
                 </ul>
             </div>
 
@@ -63,11 +63,11 @@
             <div class="lg:col-span-1">
                 <h5 class="text-md font-semibold mb-5 text-white">Profil</h5>
                 <ul class="space-y-3">
-                    <li><a href="{{ route('profil.visi-misi') }}" class="text-gray-400 hover:text-white text-sm transition flex items-center"><span class="mr-2">→</span> Visi & Misi</a></li>
-                    <li><a href="{{ route('profil.sejarah') }}" class="text-gray-400 hover:text-white text-sm transition flex items-center"><span class="mr-2">→</span> Sejarah</a></li>
-                    <li><a href="{{ route('profil.struktur') }}" class="text-gray-400 hover:text-white text-sm transition flex items-center"><span class="mr-2">→</span> Struktur Organisasi</a></li>
-                    <li><a href="{{ route('dosen.index') }}" class="text-gray-400 hover:text-white text-sm transition flex items-center"><span class="mr-2">→</span> Dosen</a></li>
-                    <li><a href="{{ route('contact.index') }}" class="text-gray-400 hover:text-white text-sm transition flex items-center"><span class="mr-2">→</span> Kontak</a></li>
+                    <li><a href="{{ route('profil.visi-misi', [], false) }}" class="text-gray-400 hover:text-white text-sm transition flex items-center"><span class="mr-2">→</span> Visi & Misi</a></li>
+                    <li><a href="{{ route('profil.sejarah', [], false) }}" class="text-gray-400 hover:text-white text-sm transition flex items-center"><span class="mr-2">→</span> Sejarah</a></li>
+                    <li><a href="{{ route('profil.struktur', [], false) }}" class="text-gray-400 hover:text-white text-sm transition flex items-center"><span class="mr-2">→</span> Struktur Organisasi</a></li>
+                    <li><a href="{{ route('dosen.index', [], false) }}" class="text-gray-400 hover:text-white text-sm transition flex items-center"><span class="mr-2">→</span> Dosen</a></li>
+                    <li><a href="{{ route('contact.index', [], false) }}" class="text-gray-400 hover:text-white text-sm transition flex items-center"><span class="mr-2">→</span> Kontak</a></li>
                 </ul>
             </div>
 

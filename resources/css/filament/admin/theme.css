@@ -12,6 +12,12 @@
     align-items: center !important;
 }
 
+/* Rich editor toolbar: allow button groups to wrap in narrow cards */
+.fi-fo-rich-editor .fi-fo-rich-editor-toolbar-group {
+    flex-wrap: wrap;
+    row-gap: 0.25rem;
+}
+
 @media (max-width: 640px) {
     .timeline-repeater .fi-fo-repeater-item-content > div {
         grid-template-columns: 1fr !important;

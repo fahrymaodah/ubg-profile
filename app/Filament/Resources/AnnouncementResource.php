@@ -13,7 +13,6 @@ use Filament\Actions\EditAction;
 use Filament\Actions\ViewAction;
 use Filament\Actions\BulkActionGroup;
 use Filament\Forms\Components\DateTimePicker;
-use Filament\Forms\Components\FileUpload;
 use Filament\Forms\Components\RichEditor;
 use Filament\Forms\Components\Select;
 use Filament\Forms\Components\TextInput;
@@ -61,21 +60,32 @@ class AnnouncementResource extends Resource
 
                                 Section::make('Pengaturan')
                                     ->schema([
-                                        DateTimePicker::make('published_at')
-                                            ->label('Tanggal Publish')
+                                        DateTimePicker::make('start_date')
+                                            ->label('Mulai Tampil')
                                             ->native(false)
                                             ->displayFormat('d M Y H:i')
-                                            ->default(now())
-                                            ->helperText('Kosongkan untuk publish sekarang')
-                                            ->columnSpanFull(),
+                                            ->helperText('Kosongkan untuk tampil sekarang'),
+
+                                        DateTimePicker::make('end_date')
+                                            ->label('Selesai Tampil')
+                                            ->native(false)
+                                            ->displayFormat('d M Y H:i')
+                                            ->helperText('Kosongkan untuk tanpa batas'),
+
+                                        Select::make('priority')
+                                            ->label('Prioritas')
+                                            ->options([
+                                                'low' => 'Rendah',
+                                                'normal' => 'Normal',
+                                                'high' => 'Tinggi',
+                                                'urgent' => 'Penting (Urgent)',
+                                            ])
+                                            ->default('normal')
+                                            ->required(),
 
                                         Toggle::make('is_active')
                                             ->label('Aktif')
                                             ->default(true),
-
-                                        Toggle::make('is_urgent')
-                                            ->label('Penting')
-                                            ->helperText('Ditandai sebagai pengumuman penting'),
                                     ])
                                     ->columns(2),
                             ])
@@ -150,24 +160,6 @@ class AnnouncementResource extends Resource
                                     ->fileAttachmentsVisibility('public')
                                     ->resizableImages()
                                     ->extraInputAttributes(['style' => 'min-height: 300px;']),
-
-                                Select::make('priority')
-                                    ->label('Prioritas')
-                                    ->options([
-                                        'low' => 'Rendah',
-                                        'normal' => 'Normal',
-                                        'high' => 'Tinggi',
-                                        'urgent' => 'Urgent',
-                                    ])
-                                    ->default('normal')
-                                    ->required(),
-
-                                FileUpload::make('attachment')
-                                    ->label('Lampiran')
-                                    ->acceptedFileTypes(['application/pdf', 'image/*', 'application/msword', 'application/vnd.openxmlformats-officedocument.wordprocessingml.document'])
-                                    ->directory('announcements')
-                                    ->maxSize(5120)
-                                    ->helperText('Format: PDF, DOC, DOCX, atau gambar. Maksimal 5MB'),
                             ])
                             ->columnSpan(1),
                     ])

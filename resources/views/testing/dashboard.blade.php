@@ -25,7 +25,7 @@
 
         {{-- Quick Actions --}}
         <div class="grid md:grid-cols-3 gap-6 mb-8">
-            <a href="{{ route('test.login.superadmin') }}" 
+            <a href="{{ route('test.login.superadmin', [], false) }}" 
                class="bg-purple-600 hover:bg-purple-700 text-white rounded-lg p-6 shadow-lg transition-colors">
                 <div class="flex items-center">
                     <svg class="w-8 h-8 mr-3" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -38,7 +38,7 @@
                 </div>
             </a>
 
-            <a href="{{ route('test.login.admin') }}" 
+            <a href="{{ route('test.login.admin', [], false) }}" 
                class="bg-blue-600 hover:bg-blue-700 text-white rounded-lg p-6 shadow-lg transition-colors">
                 <div class="flex items-center">
                     <svg class="w-8 h-8 mr-3" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -51,7 +51,7 @@
                 </div>
             </a>
 
-            <a href="{{ route('test.logout') }}" 
+            <a href="{{ route('test.logout', [], false) }}" 
                class="bg-gray-600 hover:bg-gray-700 text-white rounded-lg p-6 shadow-lg transition-colors">
                 <div class="flex items-center">
                     <svg class="w-8 h-8 mr-3" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -106,7 +106,7 @@
                             @endif
                         </td>
                         <td class="px-6 py-4 whitespace-nowrap text-sm">
-                            <a href="{{ route('test.login.user', $user->id) }}" 
+                            <a href="{{ route('test.login.user', $user->id, false) }}" 
                                class="text-indigo-600 hover:text-indigo-900 font-medium">
                                 Login →
                             </a>

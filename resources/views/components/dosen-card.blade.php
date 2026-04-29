@@ -1,7 +1,7 @@
 @props(['dosen'])
 
 <article class="group h-full">
-    <a href="{{ route('dosen.show', $dosen->nidn) }}" 
+    <a href="{{ route('dosen.show', $dosen->nidn, false) }}" 
        class="block bg-white rounded-xl shadow-md hover:shadow-xl transition-all duration-300 overflow-hidden h-full flex flex-col">
         {{-- Photo --}}
         <div class="relative h-56 flex-shrink-0 overflow-hidden">

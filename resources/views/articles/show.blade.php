@@ -144,7 +144,7 @@
             
             {{-- Related Articles --}}
             @if(isset($relatedArticles) && $relatedArticles->count() > 0)
-            <div class="mb-8">
+            <div class="">
                 <h3 class="text-2xl font-bold text-gray-900 mb-6">Artikel Terkait</h3>
                 <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
                     @foreach($relatedArticles as $related)

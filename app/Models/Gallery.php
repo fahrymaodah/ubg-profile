@@ -18,6 +18,7 @@ class Gallery extends Model
         'description',
         'type',
         'file',
+        'images',
         'youtube_url',
         'is_featured',
         'is_active',
@@ -28,6 +29,7 @@ class Gallery extends Model
     {
         return [
             'unit_type' => UnitType::class,
+            'images' => 'array',
             'is_featured' => 'boolean',
             'is_active' => 'boolean',
         ];

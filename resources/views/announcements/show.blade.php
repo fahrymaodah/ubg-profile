@@ -4,7 +4,7 @@
 
 @section('content')
 <x-breadcrumb :items="[
-    ['label' => 'Pengumuman', 'url' => route('announcement.index')],
+    ['label' => 'Pengumuman', 'url' => route('announcement.index', [], false)],
     ['label' => Str::limit($announcement->title, 50)]
 ]" />
 
@@ -67,27 +67,18 @@
                     </div>
                 </div>
 
-                {{-- Share --}}
-                <div class="p-8 border-t border-gray-100">
-                    <h3 class="text-sm font-medium text-gray-700 mb-3">Bagikan Pengumuman</h3>
-                    <x-share-buttons 
-                        :url="request()->url()" 
-                        :title="$announcement->title" 
-                        :description="strip_tags(Str::limit($announcement->content, 160))"
-                    />
-                </div>
             </article>
 
             {{-- Navigation --}}
-            <div class="mt-6">
-                <a href="{{ route('announcement.index') }}" 
+            {{-- <div class="mt-6">
+                <a href="{{ route('announcement.index', [], false) }}" 
                    class="inline-flex items-center gap-2 text-blue-600 hover:text-blue-700 font-medium">
                     <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 19l-7-7m0 0l7-7m-7 7h18"/>
                     </svg>
-                    Kembali ke Daftar Pengumuman
+                     Pengumuman
                 </a>
-            </div>
+            </div> --}}
         </div>
 
         {{-- Sidebar --}}
@@ -98,7 +89,7 @@
                 <h2 class="text-lg font-bold text-gray-900 mb-4">Pengumuman Lainnya</h2>
                 <div class="space-y-4">
                     @foreach($relatedAnnouncements as $related)
-                    <a href="{{ route('announcement.show', $related) }}" class="block group">
+                    <a href="{{ route('announcement.show', $related, false) }}" class="block group">
                         <div class="flex items-start gap-3">
                             @php
                                 $relatedConfig = $priorityConfig[$related->priority] ?? $priorityConfig['normal'];
@@ -118,6 +109,16 @@
                 </div>
             </div>
             @endif
+
+            {{-- Share --}}
+            <div class="bg-white rounded-xl shadow-lg p-6">
+                <h2 class="text-lg font-bold text-gray-900 mb-4">Bagikan</h2>
+                <x-share-buttons 
+                    :url="request()->url()" 
+                    :title="$announcement->title" 
+                    :description="strip_tags(Str::limit($announcement->content, 160))"
+                />
+            </div>
 
             {{-- Info Box --}}
             <div class="bg-blue-50 rounded-xl p-6">

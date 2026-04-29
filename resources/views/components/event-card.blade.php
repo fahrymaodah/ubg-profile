@@ -30,7 +30,7 @@
 @endphp
 
 <article class="group">
-    <a href="{{ route('event.show', $event->id) }}" 
+    <a href="{{ route('event.show', $event->id, false) }}" 
        class="block bg-white rounded-xl shadow-md hover:shadow-xl transition-all duration-300 overflow-hidden h-full">
         {{-- Image --}}
         <div class="relative h-48 overflow-hidden">

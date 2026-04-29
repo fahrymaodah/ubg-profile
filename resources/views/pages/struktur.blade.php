@@ -7,7 +7,7 @@
     {{-- Hero Section --}}
     <div class="bg-gradient-to-r from-indigo-700 to-indigo-900 text-white py-16">
         <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-            <x-breadcrumb :items="[['label' => 'Beranda', 'url' => route('home')], ['label' => 'Profil'], ['label' => 'Struktur Organisasi']]" :wrapper="false" />
+            <x-breadcrumb :items="[['label' => 'Beranda', 'url' => route('home', [], false)], ['label' => 'Profil'], ['label' => 'Struktur Organisasi']]" :wrapper="false" />
             <h1 class="text-4xl md:text-5xl font-bold mb-4">Struktur Organisasi</h1>
             <p class="text-xl text-indigo-200">{{ $settings['site_name'] ?? config('app.name') }}</p>
         </div>

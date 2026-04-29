@@ -3,7 +3,7 @@
 @section('title', 'Galeri Video - ' . ($settings['site_name'] ?? config('app.name')))
 
 @section('content')
-<x-breadcrumb :items="[['label' => 'Beranda', 'url' => route('home')], ['label' => 'Galeri', 'url' => route('gallery.index')], ['label' => 'Video']]" />
+<x-breadcrumb :items="[['label' => 'Beranda', 'url' => route('home', [], false)], ['label' => 'Galeri', 'url' => route('gallery.index', [], false)], ['label' => 'Video']]" />
 
 <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
     {{-- Page Header --}}
@@ -14,13 +14,13 @@
 
     {{-- Gallery Navigation --}}
     <div class="flex gap-4 mb-8">
-        <a href="{{ route('gallery.index') }}" class="px-4 py-2 rounded-lg text-gray-600 hover:bg-gray-100 transition">
+        <a href="{{ route('gallery.index', [], false) }}" class="px-4 py-2 rounded-lg text-gray-600 hover:bg-gray-100 transition">
             Semua
         </a>
-        <a href="{{ route('gallery.photos') }}" class="px-4 py-2 rounded-lg text-gray-600 hover:bg-gray-100 transition">
+        <a href="{{ route('gallery.photos', [], false) }}" class="px-4 py-2 rounded-lg text-gray-600 hover:bg-gray-100 transition">
             Foto
         </a>
-        <a href="{{ route('gallery.videos') }}" class="px-4 py-2 rounded-lg bg-red-600 text-white">
+        <a href="{{ route('gallery.videos', [], false) }}" class="px-4 py-2 rounded-lg bg-red-600 text-white">
             Video
         </a>
     </div>

@@ -23,13 +23,16 @@
         ];
     @endphp
     <x-filter-panel 
-        :action="route('event.index')" 
-        :reset-url="route('event.index')"
+        :action="route('event.index', [], false)" 
+        :reset-url="route('event.index', [], false)"
         :has-active-filters="request()->hasAny(['q', 'status', 'bulan'])"
+        :single-row="true"
         :show-search="true"
         search-placeholder="Cari agenda..."
         search-name="q"
-        :search-value="$q ?? ''">
+        :search-value="$q ?? ''"
+        :search-col-span-lg="6"
+        :filters-col-span-lg="4">
         
         <x-filter-select 
             name="status" 
@@ -100,7 +103,7 @@
                 }
             @endphp
             <div class="bg-white rounded-xl shadow-md overflow-hidden hover:shadow-lg transition">
-                <a href="{{ route('event.show', $event->id) }}" class="flex flex-col md:flex-row">
+                <a href="{{ route('event.show', $event->id, false) }}" class="flex flex-col md:flex-row">
                     {{-- Date Box --}}
                     <div class="md:w-32 p-4 bg-gradient-to-br from-blue-600 to-blue-700 text-white text-center flex flex-col justify-center">
                         <span class="text-3xl font-bold">{{ $event->start_date->format('d') }}</span>

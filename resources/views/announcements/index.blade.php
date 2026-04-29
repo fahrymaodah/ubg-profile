@@ -16,9 +16,16 @@
 
     {{-- Filters --}}
     <x-filter-panel 
-        :action="route('announcement.index')" 
-        :reset-url="route('announcement.index')"
-        :has-active-filters="(bool)$priority">
+        :action="route('announcement.index', [], false)" 
+        :reset-url="route('announcement.index', [], false)"
+        :has-active-filters="(bool)$priority"
+        :single-row="true"
+        :show-search="true"
+        search-placeholder="Cari pengumuman..."
+        search-name="q"
+        :search-value="request('q') ?? ''"
+        :search-col-span-lg="8"
+        :filters-col-span-lg="2">
         
         <x-filter-select 
             name="priority" 
@@ -38,7 +45,7 @@
     @if($announcements->count() > 0)
     <div class="space-y-4">
         @foreach($announcements as $announcement)
-        <a href="{{ route('announcement.show', $announcement) }}" 
+        <a href="{{ route('announcement.show', $announcement, false) }}" 
            class="block bg-white rounded-xl shadow-md overflow-hidden hover:shadow-lg transition group">
             <div class="p-6">
                 <div class="flex items-start gap-4">

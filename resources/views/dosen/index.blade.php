@@ -16,13 +16,16 @@
 
     {{-- Filters --}}
     <x-filter-panel 
-        :action="route('dosen.index')" 
-        :reset-url="route('dosen.index')"
+        :action="route('dosen.index', [], false)" 
+        :reset-url="route('dosen.index', [], false)"
         :has-active-filters="request()->hasAny(['q', 'prodi', 'jabatan'])"
+        :single-row="true"
         :show-search="true"
         search-placeholder="Nama dosen atau NIDN..."
         search-name="q"
-        :search-value="request('q') ?? ''">
+        :search-value="request('q') ?? ''"
+        :search-col-span-lg="6"
+        :filters-col-span-lg="4">
         
         @if(isset($prodiList) && $prodiList->count() > 0)
         <x-filter-select 

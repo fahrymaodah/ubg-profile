@@ -90,7 +90,7 @@
         <h2 class="text-2xl font-bold text-gray-900 mb-6">Halaman Terkait</h2>
         <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
             @foreach($relatedPages as $related)
-            <a href="{{ route('page.show', $related->slug) }}" 
+            <a href="{{ route('page.show', $related->slug, false) }}" 
                class="bg-white rounded-xl shadow-md p-6 hover:shadow-lg transition group">
                 <h3 class="font-bold text-gray-900 group-hover:text-blue-600 transition mb-2">
                     {{ $related->judul }}

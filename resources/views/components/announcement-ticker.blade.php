@@ -24,7 +24,7 @@
                      x-transition:leave-start="opacity-100 transform translate-y-0"
                      x-transition:leave-end="opacity-0 transform translate-y-full"
                      class="absolute inset-0 flex items-center">
-                    <a href="#" class="text-sm hover:underline truncate">
+                    <a href="{{ route('announcement.show', $announcement, false) }}" class="text-sm hover:underline truncate">
                         @if($announcement->priority === 'urgent')
                         <span class="animate-pulse mr-2">🔴</span>
                         @elseif($announcement->priority === 'high')

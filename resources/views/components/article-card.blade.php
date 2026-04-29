@@ -30,7 +30,7 @@
 @endphp
 
 <article class="{{ $featured ? 'md:col-span-2 md:row-span-2' : '' }}">
-    <a href="{{ route('article.show', $article->slug) }}" 
+    <a href="{{ route('article.show', $article->slug, false) }}" 
        class="group block bg-white rounded-xl shadow-md hover:shadow-xl transition-all duration-300 overflow-hidden h-full">
         {{-- Image --}}
         <div class="relative {{ $featured ? 'h-64 md:h-80' : 'h-48' }} overflow-hidden">

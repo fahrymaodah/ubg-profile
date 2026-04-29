@@ -12,6 +12,7 @@ use Filament\Actions\DeleteBulkAction;
 use Filament\Actions\EditAction;
 use Filament\Actions\BulkActionGroup;
 use Filament\Forms\Components\FileUpload;
+use Filament\Forms\Components\Repeater;
 use Filament\Forms\Components\Select;
 use Filament\Forms\Components\Textarea;
 use Filament\Forms\Components\TextInput;
@@ -54,36 +55,36 @@ class GalleryResource extends Resource
             ->components([
                 Grid::make(['default' => 1, 'lg' => 2])
                     ->schema([
-                        // Left column: Informasi Unit + Pengaturan (stacked)
-                        Grid::make(1)
-                            ->schema([
-                                static::getUnitFormSection(),
-
-                                Section::make('Pengaturan')
-                                    ->schema([
-                                        TextInput::make('order')
-                                            ->label('Urutan')
-                                            ->numeric()
-                                            ->default(0)
-                                            ->columnSpan(2),
-
-                                        Toggle::make('is_active')
-                                            ->label('Aktif')
-                                            ->default(true)
-                                            ->inline(false)
-                                            ->columnSpan(1),
-
-                                        Toggle::make('is_featured')
-                                            ->label('Unggulan')
-                                            ->helperText('Ditampilkan di halaman utama')
-                                            ->inline(false)
-                                            ->columnSpan(1),
-                                    ])
-                                    ->columns(4),
-                            ])
+                        static::getUnitFormSection()
                             ->columnSpan(1),
 
-                        // Right column: Konten Gallery
+                        Section::make('Pengaturan')
+                            ->schema([
+                                TextInput::make('order')
+                                    ->label('Urutan')
+                                    ->numeric()
+                                    ->default(0)
+                                    ->columnSpan(2),
+
+                                Toggle::make('is_active')
+                                    ->label('Aktif')
+                                    ->default(true)
+                                    ->inline(false)
+                                    ->columnSpan(1),
+
+                                Toggle::make('is_featured')
+                                    ->label('Unggulan')
+                                    ->helperText('Ditampilkan di halaman utama')
+                                    ->inline(false)
+                                    ->columnSpan(1),
+                            ])
+                            ->columns(4)
+                            ->columnSpan(1),
+                    ])
+                    ->columnSpanFull(),
+
+                Grid::make(['default' => 1, 'lg' => 2])
+                    ->schema([
                         Section::make('Konten Gallery')
                             ->schema([
                                 TextInput::make('title')
@@ -93,7 +94,7 @@ class GalleryResource extends Resource
 
                                 Textarea::make('description')
                                     ->label('Deskripsi')
-                                    ->rows(3),
+                                    ->rows(5),
 
                                 Select::make('type')
                                     ->label('Tipe')
@@ -106,14 +107,14 @@ class GalleryResource extends Resource
                                     ->default('image'),
 
                                 FileUpload::make('file')
-                                    ->label('Gambar')
+                                    ->label('Cover')
                                     ->image()
                                     ->disk('public')
                                     ->visibility('public')
                                     ->directory('gallery')
                                     ->imageEditor()
                                     ->maxSize(5120)
-                                    ->helperText('Maksimal 5MB')
+                                    ->helperText('Cover album, maksimal 5MB')
                                     ->visible(fn (Get $get) => $get('type') === 'image')
                                     ->required(fn (Get $get) => $get('type') === 'image'),
 
@@ -124,6 +125,46 @@ class GalleryResource extends Resource
                                     ->helperText('Contoh: https://www.youtube.com/watch?v=xxxxx')
                                     ->visible(fn (Get $get) => $get('type') === 'video')
                                     ->required(fn (Get $get) => $get('type') === 'video'),
+                            ])
+                            ->columnSpan(1),
+
+                        Section::make('Foto Album')
+                            ->schema([
+                                Repeater::make('images')
+                                    ->label('Foto Album')
+                                    ->schema([
+                                        FileUpload::make('path')
+                                            ->label('Foto')
+                                            ->image()
+                                            ->disk('public')
+                                            ->visibility('public')
+                                            ->directory('gallery/images')
+                                            ->imageEditor()
+                                            ->maxSize(5120)
+                                            ->required(),
+
+                                        TextInput::make('label')
+                                            ->label('Label')
+                                            ->placeholder('Contoh: Kegiatan di aula'),
+                                    ])
+                                    ->columns(1)
+                                    ->addActionLabel('+ Tambah Foto')
+                                    ->reorderable()
+                                    ->collapsible()
+                                    ->itemLabel(fn (array $state): ?string => $state['label'] ?? $state['path'] ?? 'Foto')
+                                    ->formatStateUsing(function ($state) {
+                                        if (! is_array($state)) {
+                                            return [];
+                                        }
+
+                                        if (isset($state[0]) && is_string($state[0])) {
+                                            return array_map(fn ($path) => ['path' => $path], $state);
+                                        }
+
+                                        return $state;
+                                    })
+                                    ->dehydrateStateUsing(fn ($state) => array_values($state ?? []))
+                                    ->visible(fn (Get $get) => $get('type') === 'image'),
                             ])
                             ->columnSpan(1),
                     ])

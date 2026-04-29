@@ -10,7 +10,7 @@
     @if($showSearch)
     <div class="bg-white rounded-xl shadow-md p-5">
         <h4 class="text-lg font-bold text-gray-900 mb-4">Pencarian</h4>
-        <form action="{{ route('search') }}" method="GET">
+        <form action="{{ route('search', [], false) }}" method="GET">
             <div class="relative">
                 <input type="text" 
                        name="q" 
@@ -34,7 +34,7 @@
         <ul class="space-y-2">
             @foreach($categories as $category)
             <li>
-                <a href="{{ route('article.category', $category->slug) }}" 
+                <a href="{{ route('article.category', $category->slug, false) }}" 
                    class="flex items-center justify-between text-gray-600 hover:text-blue-600 transition py-1">
                     <span>{{ $category->name }}</span>
                     <span class="bg-gray-100 text-gray-600 text-xs px-2 py-1 rounded-full">
@@ -53,7 +53,7 @@
         <h4 class="text-lg font-bold text-gray-900 mb-4">Artikel Terbaru</h4>
         <div class="space-y-4">
             @foreach($recentArticles as $article)
-            <a href="{{ route('article.show', $article->slug) }}" class="flex gap-3 group">
+            <a href="{{ route('article.show', $article->slug, false) }}" class="flex gap-3 group">
                 <div class="flex-shrink-0 w-16 h-16 rounded-lg overflow-hidden">
                     @if($article->featured_image)
                     <img src="{{ Storage::url($article->featured_image) }}" 
@@ -87,7 +87,7 @@
         <h4 class="text-lg font-bold text-gray-900 mb-4">Tags</h4>
         <div class="flex flex-wrap gap-2">
             @foreach($tags as $tag)
-            <a href="{{ route('search', ['tag' => $tag]) }}" 
+            <a href="{{ route('search', ['tag' => $tag], false) }}" 
                class="px-3 py-1 bg-gray-100 text-gray-600 text-sm rounded-full hover:bg-blue-100 hover:text-blue-600 transition">
                 {{ $tag }}
             </a>

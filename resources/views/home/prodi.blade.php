@@ -44,11 +44,11 @@
                 @endif
                 
                 <div class="flex flex-wrap gap-4">
-                    <a href="{{ route('page.show', 'visi-misi') }}" 
+                    <a href="{{ route('page.show', 'visi-misi', false) }}" 
                        class="inline-flex items-center px-6 py-3 bg-blue-600 text-white font-semibold rounded-lg hover:bg-blue-700 transition">
                         Visi & Misi
                     </a>
-                    <a href="{{ route('page.show', 'kurikulum') }}" 
+                    <a href="{{ route('page.show', 'kurikulum', false) }}" 
                        class="inline-flex items-center px-6 py-3 border-2 border-blue-600 text-blue-600 font-semibold rounded-lg hover:bg-blue-50 transition">
                         Kurikulum
                     </a>
@@ -158,7 +158,7 @@
                 <h2 class="text-3xl md:text-4xl font-bold text-gray-900 mb-2">Dosen</h2>
                 <p class="text-lg text-gray-600">Tenaga pengajar Program Studi {{ $prodi->nama }}</p>
             </div>
-            <a href="{{ route('dosen.index') }}" 
+            <a href="{{ route('dosen.index', [], false) }}" 
                class="hidden md:inline-flex items-center px-4 py-2 text-blue-600 font-medium hover:bg-blue-50 rounded-lg transition">
                 Lihat Semua
             </a>
@@ -182,7 +182,7 @@
                 <h2 class="text-3xl md:text-4xl font-bold text-gray-900 mb-2">Berita Terkini</h2>
                 <p class="text-lg text-gray-600">Informasi dan berita terbaru</p>
             </div>
-            <a href="{{ route('article.index') }}" 
+            <a href="{{ route('article.index', [], false) }}" 
                class="hidden md:inline-flex items-center px-4 py-2 text-blue-600 font-medium hover:bg-blue-50 rounded-lg transition">
                 Lihat Semua
             </a>
@@ -206,7 +206,7 @@
                 <h2 class="text-3xl md:text-4xl font-bold text-gray-900 mb-2">Prestasi</h2>
                 <p class="text-lg text-gray-600">Pencapaian mahasiswa</p>
             </div>
-            <a href="{{ route('prestasi.index') }}" class="hidden md:inline-flex items-center px-4 py-2 text-blue-600 font-medium hover:bg-blue-50 rounded-lg transition">
+            <a href="{{ route('prestasi.index', [], false) }}" class="hidden md:inline-flex items-center px-4 py-2 text-blue-600 font-medium hover:bg-blue-50 rounded-lg transition">
                 Lihat Semua
             </a>
         </div>
@@ -231,7 +231,7 @@
             <a href="#" class="inline-flex items-center px-8 py-4 bg-white text-purple-600 font-semibold rounded-lg hover:bg-gray-100 transition text-lg">
                 Daftar Sekarang
             </a>
-            <a href="{{ route('contact.index') }}" class="inline-flex items-center px-8 py-4 border-2 border-white text-white font-semibold rounded-lg hover:bg-white hover:text-purple-600 transition text-lg">
+            <a href="{{ route('contact.index', [], false) }}" class="inline-flex items-center px-8 py-4 border-2 border-white text-white font-semibold rounded-lg hover:bg-white hover:text-purple-600 transition text-lg">
                 Hubungi Kami
             </a>
         </div>

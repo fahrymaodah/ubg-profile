@@ -4,7 +4,7 @@
 
 @section('content')
 <x-breadcrumb :items="[
-    ['label' => 'Berita', 'url' => route('article.index')],
+    ['label' => 'Berita', 'url' => route('article.index', [], false)],
     ['label' => $category->name]
 ]" />
 
@@ -47,7 +47,7 @@
                 </svg>
                 <h3 class="text-xl font-semibold text-gray-600 mb-2">Belum Ada Artikel</h3>
                 <p class="text-gray-500">Belum ada artikel dalam kategori ini.</p>
-                <a href="{{ route('article.index') }}" class="inline-flex items-center mt-4 text-blue-600 hover:text-blue-700">
+                <a href="{{ route('article.index', [], false) }}" class="inline-flex items-center mt-4 text-blue-600 hover:text-blue-700">
                     ← Kembali ke semua artikel
                 </a>
             </div>

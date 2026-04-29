@@ -4,7 +4,7 @@
 
 @section('content')
 <x-breadcrumb :items="[
-    ['label' => 'Dosen', 'url' => route('dosen.index')],
+    ['label' => 'Dosen', 'url' => route('dosen.index', [], false)],
     ['label' => $dosen->nama_lengkap]
 ]" />
 
