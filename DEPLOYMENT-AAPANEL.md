@@ -55,7 +55,8 @@ cd ubg-profile
 
 ```bash
 composer install --no-dev --optimize-autoloader
-npm ci && npm run build
+# Tidak perlu npm: public/build sudah ikut di-commit di repository.
+# Rebuild dilakukan di mesin developer via ./build.sh sebelum commit.
 ```
 
 ### Step 4: Konfigurasi Environment
@@ -295,14 +296,22 @@ exit
 
 ## 🔄 Update Aplikasi
 
-Ketika ada update dari repository:
+Ketika ada update dari repository, jalankan script deploy:
+
+```bash
+cd /www/wwwroot/ubg-profile
+./deploy.sh
+```
+
+Script itu menjalankan langkah-langkah berikut:
 
 ```bash
 cd /www/wwwroot/ubg-profile
 
 git pull origin main
 composer install --no-dev --optimize-autoloader
-npm ci && npm run build
+# Tidak perlu npm: public/build sudah ikut di-commit di repository.
+# Rebuild dilakukan di mesin developer via ./build.sh sebelum commit.
 php artisan migrate --force
 
 php artisan optimize:clear

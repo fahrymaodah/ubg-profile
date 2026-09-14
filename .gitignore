@@ -13,7 +13,7 @@
 /.zed
 /auth.json
 /node_modules
-/public/build
+# /public/build  -> sengaja DI-COMMIT, lihat deploy.sh
 /public/hot
 /public/storage
 /storage/*.key
@@ -41,6 +41,7 @@ Thumbs.db
 /.copilot-chat
 /.config
 /.local
+/.playwright-mcp
 
 # Development only (not for production)
 /docs

@@ -9,3 +9,6 @@
 /.github export-ignore
 CHANGELOG.md export-ignore
 .styleci.yml export-ignore
+
+# Hasil build Vite: di-commit, tapi jangan tampilkan diff-nya (bundle minified)
+/public/build/** -diff linguist-generated
